@@ -139,14 +139,53 @@ from datetime import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Attendance, Company
-from .forms import TimeUpdateForm
+from .forms import TimeUpdateForm,HRAttendance
+
+# views.py
+
+
+
+# views.py
+
+# views.py
+
+from django.shortcuts import render, redirect
+from .models import Employee, Attendance
+from .forms import AttendanceForm
+
+def updateattend(request):
+    employees = Employee.objects.all()
+    if request.method == 'POST':
+        for employee in employees:
+            form = AttendanceForm(request.POST, prefix=f'employee_{employee.id}')
+            if form.is_valid():
+                # Save attendance for each employee
+                attendance = form.save(commit=False)
+                attendance.employee = employee
+                attendance.save()
+            else:
+                # Handle form errors appropriately
+                pass
+
+        # Redirect to a success page or refresh the current page
+        return redirect('updateattend')  # Replace with your URL name
+
+    else:  # GET request
+        formset = []
+        for employee in employees:
+            attendance_instance = Attendance(employee=employee)  # Create a dummy instance of Attendance
+            form = AttendanceForm(instance=attendance_instance, prefix=f'employee_{employee.id}')
+            formset.append(form)
+
+        context = {
+            'formset': formset,
+        }
+        return render(request, 'hr_temp/updateattend.html', context)
 
 
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Attendance, Company
-from .forms import TimeUpdateForm
+
 
 def hrUpdateOutime(request):
     # Fetch all attendance records initially
@@ -364,79 +403,7 @@ def generate_salary_pdf(request):
 
 
 
-# from django.shortcuts import render, HttpResponse
-# from .models import TravelExpense, Employee
-# from datetime import datetime
 
-# def add_expenses(request):
-#     try:
-#         user = request.user
-#         employee = Employee.objects.get(user=user)
-    
-#         if request.method == 'POST':
-#             # Retrieve POST data for multiple expenses
-#             sr_nos = request.POST.getlist('sr_no[]')
-#             from_places = request.POST.getlist('from_place[]')
-#             from_dates = request.POST.getlist('from_date[]')
-#             to_places = request.POST.getlist('to_place[]')
-#             to_dates = request.POST.getlist('to_date[]')
-#             purposes = request.POST.getlist('purpose[]')
-#             distances = request.POST.getlist('distance[]')
-#             models_of_travel = request.POST.getlist('model_of_travel[]')
-#             food_prices = request.POST.getlist('food_price[]')
-#             transport_fares = request.POST.getlist('transport_fare[]')
-#             accommodations = request.POST.getlist('accommodation[]')
-#             others = request.POST.getlist('other[]')
-#             miscellaneouses = request.POST.getlist('miscellaneous[]')
-
-#             # Initialize a new batch_id for the current batch of expenses
-#             batch_id = None
-
-#             for sr_no, from_place, from_date_str, to_place, to_date_str, purpose, distance, \
-#                 model_of_travel, food_price, transport_fare, accommodation, other, miscellaneous \
-#                 in zip(sr_nos, from_places, from_dates, to_places, to_dates, purposes, distances,
-#                        models_of_travel, food_prices, transport_fares, accommodations, others, miscellaneouses):
-
-#                 # Convert date strings to datetime.date objects
-#                 from_date = datetime.strptime(from_date_str, '%Y-%m-%d').date()
-#                 to_date = datetime.strptime(to_date_str, '%Y-%m-%d').date()
-
-#                 # Create TravelExpense instance
-#                 travel_expense = TravelExpense.objects.create(
-#                     employee=employee,
-#                     sr_no=sr_no,
-#                     from_place=from_place,
-#                     from_date=from_date,
-#                     to_place=to_place,
-#                     to_date=to_date,
-#                     purpose=purpose,
-#                     distance=distance,
-#                     model_of_travel=model_of_travel,
-#                     food_price=food_price,
-#                     transport_fare=transport_fare,
-#                     accommodation=accommodation,
-#                     other=other,
-#                     miscellaneous=miscellaneous,
-#                 )
-
-#                 # Assign the batch_id to the first created expense in the batch
-#                 if batch_id is None:
-#                     batch_id = travel_expense.batch_id
-#                 else:
-#                     travel_expense.batch_id = batch_id
-#                     travel_expense.save()
-#             # After all expenses are created in the batch, ensure all have the same batch_id
-#             TravelExpense.objects.filter(batch_id=None).update(batch_id=batch_id)
-
-#             return HttpResponse('Expenses added successfully!')
-
-#     except Employee.DoesNotExist:
-#         return HttpResponse('Employee does not exist.', status=400)
-
-#     except Exception as e:
-#         return HttpResponse(f'Error: {str(e)}', status=500)
-
-#     return render(request, 'emp_temp/add_expenses.html', {'employee': employee})
 
 from django.shortcuts import render, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist

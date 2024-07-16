@@ -90,7 +90,7 @@ class Employee(models.Model):
     standard_statutory_bonus = models.BigIntegerField()
     standard_conveyance_allowance = models.BigIntegerField()
     standard_LTA = models.BigIntegerField()
-    other_allowance = models.BigIntegerField(blank=True)
+    other_allowance = models.BigIntegerField()
     aadhar_image = models.ImageField(upload_to='media/images/', blank=True)
     pancard_image = models.ImageField(upload_to='media/images/', blank=True)
     bank_account_no = models.BigIntegerField()

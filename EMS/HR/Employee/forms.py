@@ -175,7 +175,7 @@ class EmployeeCreationForm(forms.Form):
     standard_statutory_bonus = forms.IntegerField(label='Standard Statutory Bonus')
     standard_conveyance_allowance = forms.IntegerField(label='Standard Conveyance Allowance')
     standard_LTA = forms.IntegerField(label='Standard LTA')
-    other_allowance = forms.DecimalField(label='Other Allowance')
+    other_allowance = forms.IntegerField(label='Other Allowance')
     nominee = forms.CharField()
     nominee_relation = forms.CharField()
     aadhaar = forms.IntegerField()
@@ -301,6 +301,7 @@ class EmployeeCreationForm(forms.Form):
                 standard_edu_allowance=self.cleaned_data['standard_edu_allowance'],
                 standard_statutory_bonus=self.cleaned_data['standard_statutory_bonus'],
                 standard_conveyance_allowance=self.cleaned_data['standard_conveyance_allowance'],
+                other_allowance=self.cleaned_data['other_allowance'],
                 standard_LTA=self.cleaned_data['standard_LTA'],
                 loanamount=self.cleaned_data.get('loanamount'),
                 emi=self.cleaned_data.get('emi'),
@@ -327,6 +328,21 @@ from django.core.exceptions import ValidationError
 from .models import Employee 
 from django.http import JsonResponse
 import json
+
+
+class HRAttendance(forms.ModelForm):
+    intime = forms.TimeField(label='In Time', widget=forms.TimeInput(attrs={'type': 'time'}))
+    outtime = forms.TimeField(label='Out Time', required=False, widget=forms.TimeInput(attrs={'type': 'time'}))
+    date = forms.DateField(label='Date', widget=forms.DateInput(attrs={'type': 'date'}))
+    remark = forms.CharField(label='Remark', required=False, max_length=100)
+
+    class Meta:
+        model = Attendance
+        fields = ['employee', 'intime', 'outtime', 'date', 'remark']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['employee'].queryset = Employee.objects.all() 
 
 class AttendanceForm(forms.ModelForm):
     intime = forms.TimeField(label='In Time', widget=forms.TimeInput(attrs={'type': 'time'}))
@@ -425,6 +441,16 @@ class AttendanceForm(forms.ModelForm):
 
 
 
+from django import forms
+from .models import Attendance
+
+
+        
+
+    
+
+
+
 
 class LeaveRequestForm(forms.ModelForm):
     leave_type = forms.ChoiceField(label='Leave Type', choices=LeaveRequest.LEAVE_CHOICES)
@@ -501,8 +527,7 @@ class TimeUpdateForm(forms.ModelForm):
         outtime = self.cleaned_data.get('outtime')
         current_time = datetime.now().time()
 
-        if outtime and outtime > current_time:
-            raise forms.ValidationError("Out time cannot be greater than the current time")
+        
 
         return outtime
 

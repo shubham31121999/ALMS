@@ -79,6 +79,8 @@ urlpatterns = [
     path('pdf_generate/<str:emp_id>/', views.pdf_generate, name='pdf_generate'),
     path('pdf_upload/<str:emp_id>/', views.pdf_upload, name='pdf_upload'),
     path('hrUpdateOutime/', views.hrUpdateOutime, name='hrUpdateOutime'),
+    path('updateattend',views.updateattend,name='updateattend'),
+    
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler403 = 'Employee.views.handle_permission_denied'
