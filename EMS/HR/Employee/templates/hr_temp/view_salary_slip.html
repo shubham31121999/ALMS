@@ -1,0 +1,64 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+    .card{
+        width:80%;
+        margin:0% 4%;
+    }
+    .card-header h2{
+        text-align: center;
+    }
+    .card {
+        max-width: 95%;
+        height: 100%;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .card-header{
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-top-left-radius:20px;
+        border-top-right-radius: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+
+
+<div class="card">
+    <div class="card-header">
+        <h2>Salary Slip Details</h2>
+    </div>
+    <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless">
+                    <thead>
+                        <tr>
+                            <td><strong>Month</strong></td>
+                            <td><strong>Year</strong></td>
+                            <td><strong>Download</strong></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for salary_slip in salary_slips %}
+                        <tr>
+                            <td><p class="text-muted"> {{ salary_slip.month }}</p>
+                            </td>
+                            <td> <p class="text-muted"> {{ salary_slip.year }}</p>
+                            </td>
+                            <td>  <a  href="{{ salary_slip.salary_slip_file.url }}">Click here</a>
+                            </td>
+                                
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+
+{% endblock main_content %}
+            
+

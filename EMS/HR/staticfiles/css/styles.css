@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200&display=swap');
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'poppins', 'sans-serif';
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #c7c0c0ce;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+
+header {
+    display: none;
+}
+
+.box {
+    background-color: rgba(255, 255, 255, 0.616);
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+    margin: auto auto;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.box h2 {
+    margin: 0 0 30px 0;
+    padding: 0;
+    color: #000000;
+    text-align: center;
+}
+
+.box .inputBox label {
+    color: #000000;
+}
+
+.box .inputBox input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #000000;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    outline: none;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.box .inputBox2 label {
+    color: #000000;
+}
+
+.box .inputBox2 input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #000000;
+    font-size: 15px;
+    letter-spacing: 2px;
+    margin-bottom: 6px 20px 6px 20 px;
+    outline: none;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.box input[type="button"], .box button[type="button"], a.button {
+    font-family: sans-serif;
+    background: #03a9f4;
+    font-size: 11px;
+    border: none;
+    border-radius: 5px;
+    color: #000000;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 10px 20px;
+    letter-spacing: 2px;
+    outline: none;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin: 2px 20px 2px 20px;
+    display: inline-block;
+}
+
+.box input[type="submit"]:hover, .box button[type="submit"]:hover, a.button:hover {
+    opacity: 0.8;
+}
+
+
+
+
+#bt1 {
+    background-color: #800fdd; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    display: block;
+    margin: 0 auto;
+}
+
+#bt1:hover {
+    background-color: #1a9cd8;
+}

@@ -1,0 +1,111 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+ .right-most {
+    margin: 0 auto;
+    margin-right: 0%; /* Ensures no space on the right */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -5% solid #ccc;
+    border-radius: -5%;
+    margin-bottom: 1%;
+
+}
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -5%;
+    border-top-right-radius: -5%;
+    margin-bottom: 0%;
+}
+
+h2 {
+        text-align: center;
+        color: #fff;
+}
+
+.card-header h2 {
+    text-align: center;
+    color: #fff;
+}
+
+.table thead {
+    background-color: #89CFF0;
+}
+
+</style>
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      
+      <div class="card card-container">
+        <div class="card-header">
+          <h2>Employee tables</h2>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>Employee Id</th>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Joining Date</th>
+              <th>Probation Date</th>
+              <th>Attendance</th>
+              <th>Leaves Table</th>
+              <th>View All</th>
+              <th>Leave Balanace</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for employee in employees %}
+            
+            <tr>
+              
+              <td>{{ employee.emp_id}}</td>
+              <td>
+                {% for user in users %}
+                    {% if user.id == employee.user_id %}
+                        {{ user.first_name }} {{ user.last_name }}
+                    {% endif %}
+                {% endfor %}
+              </td>
+              <td>{{ employee.designation }}</td>
+              <td>{{ employee.date_of_joining }}</td>
+              <td>{{ employee.date_of_probation }}</td>
+              <td><a href="{% url 'emp_details' %}?emp_id={{ employee.emp_id }}" class="btn btn-primary">Attendance</a></td>
+              <td><a href="{% url 'emp_leavetable' emp_id=employee.emp_id %}" class="btn btn-primary">Leave Requests</a></td>
+              <td><a href="{% url 'view_all' emp_id=employee.emp_id %}" class="btn btn-primary">View All</a></td>
+              <td><a href="{% url 'employee_leave_balance' emp_id=employee.emp_id %}" class="btn btn-primary">Leave Balance</a></td>
+            </tr>
+            {% endfor %}
+            
+            
+            </tbody>
+            
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+
+  <!-- /.content -->
+{% endblock main_content %}

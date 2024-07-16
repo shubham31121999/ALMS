@@ -1,0 +1,111 @@
+<!-- <style>
+  .nav-item.dropdown {
+  position: relative;
+
+}
+
+/* Position the dropdown menu */
+.dropdown-menu {
+  right: 0;
+  left: auto;
+}
+</style> -->
+
+<style>
+  .nav-item.dropdown {
+    position: relative;
+  }
+
+  /* Position the dropdown menu */
+  .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 350px; /* Adjust the width as needed */
+    max-height: 600px; /* Adjust the height as needed */
+    overflow-y: auto; 
+  }
+
+  .navbar-expand  {
+    /* padding-right: .5rem; */
+    padding-left: .5rem;
+  }
+</style>
+
+  <ul class="navbar-nav ml-auto"> 
+    <!-- Notifications Dropdown Menu -->
+    <li class="nav-item dropdown">
+      <a class="nav-link" data-toggle="dropdown" href="#">
+        <i class="far fa-bell"></i>
+        <span class=".navbar-expand " id="notificationBadge">0</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="position: absolute; right: 0;" id="notificationsContainer">
+        <span class="dropdown-item dropdown-header">Notifications</span>
+        <div id="notification">
+        </div>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item dropdown-footer" id="seeAllNotificationsLink">See All Notifications</a>
+      </div>
+    </li>
+  </ul> 
+
+
+  <script>
+    // Function to fetch notifications from the server
+    function fetchNotifications() {
+        fetch('/get_notifications/')  
+            .then(response => response.json())
+            .then(data => {
+                displayNotifications(data);
+            })
+            .catch(error => console.error('Error fetching notifications:', error));
+    }
+  
+    // Function to display notifications
+    function displayNotifications(notifications) {
+        const notificationsContainer = document.getElementById('notificationsContainer');
+        const badge = document.getElementById('notificationBadge');
+  
+        // Clear existing notifications
+        notificationsContainer.innerHTML = '';
+        badge.innerText = notifications.length; // Update badge count
+
+        // Reverse the notifications array to show the latest first
+        notifications.reverse();
+
+  
+        // Loop through the notifications and create HTML elements for each notification
+        notifications.forEach(notification => {
+            const notificationItem = document.createElement('a');
+            notificationItem.classList.add('dropdown-item');
+            notificationItem.href = '#';
+            notificationItem.innerHTML = `
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <i class="fas fa-bell mr-2"></i>
+                        <span>${notification.message}</span>
+                    </div>
+                    
+                </div>
+                <div> <div class="text-muted text-sm">${notification.timestamp}</div></div>
+                
+            `;
+            notificationsContainer.appendChild(notificationItem);
+            // <div class="text-muted text-sm">Employee: ${notification.employee}</div>
+            const divider = document.createElement('div');
+            divider.classList.add('dropdown-divider');
+            notificationsContainer.appendChild(divider);
+        });
+        
+        // Add a link to see all notifications
+        const seeAllNotificationsLink = document.getElementById('seeAllNotificationsLink');
+        seeAllNotificationsLink.addEventListener('click', function(event) {
+            // Add your logic to handle the "See All Notifications" link click event
+        });
+    }
+  
+    // Fetch notifications when the page loads
+    window.addEventListener('load', fetchNotifications);
+  </script>
+
+
+

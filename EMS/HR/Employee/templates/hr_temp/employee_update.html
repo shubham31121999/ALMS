@@ -1,0 +1,376 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        max-width: 95%;
+        margin: 20px auto;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-table {
+        width: 100%;
+    }
+
+    .form-table tr {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .form-table td {
+        width: calc(50% - 10px); /* Two fields per row */
+        margin-bottom: 10px;
+    }
+
+    .form-group {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    input[type="date"],
+    textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #218838;
+    }
+</style>
+
+<section class="card">
+    <div class="card-header">
+        <h2>Employee Update</h2>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- User Details -->
+        <table class="form-table">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" value="{{ employee.user.username }}">
+                    </td>
+                    <td>
+                        <label for="first_name">First Name:</label>
+                        <input type="text" id="first_name" name="first_name" value="{{ employee.user.first_name }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="{{ employee.user.last_name }}">
+                    </td>
+                    <td>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="{{ employee.user.email }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password">
+                    </td>
+                    <td>
+                        <label for="reporting">Reporting:</label>
+                        <input type="text" id="reporting" name="reporting" value="{{ employee.reporting }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="bank">Bank:</label>
+                        <input type="text" id="bank" name="bank" value="{{ employee.bank }}">
+                    </td>
+                    <td>
+                        <label for="email2">Alternate Email:</label>
+                        <input type="email" id="email2" name="email2" value="{{ employee.email2 }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="emp_id">Employee ID:</label>
+                        <input type="text" id="emp_id" name="emp_id" value="{{ employee.emp_id }}">
+                    </td>
+                    <td>
+                        <label for="title">Title:</label>
+                        <select id="title" name="title">
+                            {% for title, _ in employee.TITLE %}
+                            <option value="{{ title }}" {% if title == employee.title %}selected{% endif %}>{{ title }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="mobile_no">Mobile Number:</label>
+                        <input type="text" id="mobile_no" name="mobile_no" value="{{ employee.mobile_no }}">
+                    </td>
+                    <td>
+                        <label for="emg_mobile_no_1">Emergency Mobile No. 1:</label>
+                        <input type="text" id="emg_mobile_no_1" name="emg_mobile_no_1" value="{{ employee.emg_mobile_no_1 }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="emg_mobile_no_2">Emergency Mobile No. 2:</label>
+                        <input type="text" id="emg_mobile_no_2" name="emg_mobile_no_2" value="{{ employee.emg_mobile_no_2 }}">
+                    </td>
+                    <td>
+                        <label for="emg_relation_1">Emergency Relation 1:</label>
+                        <input type="text" id="emg_relation_1" name="emg_relation_1" value="{{ employee.emg_relation_1 }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="emg_relation_2">Emergency Relation 2:</label>
+                        <input type="text" id="emg_relation_2" name="emg_relation_2" value="{{ employee.emg_relation_2 }}">
+                    </td>
+                    <td>
+                        <label for="pan_no">PAN Number:</label>
+                        <input type="text" id="pan_no" name="pan_no" value="{{ employee.pan_no }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="aadhaar">Aadhaar Number:</label>
+                        <input type="text" id="aadhaar" name="aadhaar" value="{{ employee.aadhaar }}">
+                    </td>
+                    <td>
+                        <label for="designation">Designation:</label>
+                        <input type="text" id="designation" name="designation" value="{{ employee.designation }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="company">Company:</label>
+                        <input type="text" id="company" name="company" value="{{ employee.company }}">
+                    </td>
+                    <td>
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address">{{ employee.address }}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="current_address">Current Address:</label>
+                        <textarea id="current_address" name="current_address">{{ employee.current_address }}</textarea>
+                    </td>
+                    <td>
+                        <label for="salary">Salary:</label>
+                        <input type="text" id="salary" name="salary" value="{{ employee.salary }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="standard_basic">Standard Basic:</label>
+                        <input type="text" id="standard_basic" name="standard_basic" value="{{ employee.standard_basic }}">
+                    </td>
+                    <td>
+                        <label for="standard_HRA">Standard HRA:</label>
+                        <input type="text" id="standard_HRA" name="standard_HRA" value="{{ employee.standard_HRA }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="standard_edu_allowance">Standard Education Allowance:</label>
+                        <input type="text" id="standard_edu_allowance" name="standard_edu_allowance" value="{{ employee.standard_edu_allowance }}">
+                    </td>
+                    <td>
+                        <label for="standard_statutory_bonus">Standard Statutory Bonus:</label>
+                        <input type="text" id="standard_statutory_bonus" name="standard_statutory_bonus" value="{{ employee.standard_statutory_bonus }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="standard_conveyance_allowance">Standard Conveyance Allowance:</label>
+                        <input type="text" id="standard_conveyance_allowance" name="standard_conveyance_allowance" value="{{ employee.standard_conveyance_allowance }}">
+                    </td>
+                    <td>
+                        <label for="standard_LTA">Standard LTA:</label>
+                        <input type="text" id="standard_LTA" name="standard_LTA" value="{{ employee.standard_LTA }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="other_allowance">Other Allowance:</label>
+                        <input type="text" id="other_allowance" name="other_allowance" value="{{ employee.other_allowance }}">
+                    </td>
+                    <td>
+                        <label for="aadhar_image">Aadhar Image:</label>
+                        <input type="file" id="aadhar_image" name="aadhar_image">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="pancard_image">PAN Card Image:</label>
+                        <input type="file" id="pancard_image" name="pancard_image">
+                    </td>
+                    <td>
+                        <label for="bank_account_no">Bank Account Number:</label>
+                        <input type="text" id="bank_account_no" name="bank_account_no" value="{{ employee.bank_account_no }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ifsc_code">IFSC Code:</label>
+                        <input type="text" id="ifsc_code" name="ifsc_code" value="{{ employee.ifsc_code }}">
+                    </td>
+                    <td>
+                        <label for="blood_group">Blood Group:</label>
+                        <select id="blood_group" name="blood_group">
+                            {% for blood_group, value in employee.BLOOD_GROUP_CHOICES %}
+                            <option value="{{ blood_group }}" {% if blood_group == employee.blood_group %}selected{% endif %}>{{ blood_group }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender">
+                            {% for gender, value in employee.GENDER_CHOICES %}
+                            <option value="{{ gender }}" {% if gender == employee.gender %}selected{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <label for="marital_status">Marital Status:</label>
+                        <select id="marital_status" name="marital_status">
+                            {% for status, value in employee.MARITAL_STATUS %}
+                            <option value="{{ status }}" {% if status == employee.marital_status %}selected{% endif %}>{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="anniversary_date">Anniversary Date:</label>
+                        <input type="date" id="anniversary_date" name="anniversary_date" value="{{ employee.anniversary_date }}">
+                    </td>
+                    <td>
+                        <label for="date_of_birth">Date of Birth:</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ employee.date_of_birth }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="date_of_joining">Date of Joining:</label>
+                        <input type="date" id="date_of_joining" name="date_of_joining" value="{{ employee.date_of_joining }}">
+                    </td>
+                    <td>
+                        <label for="date_of_probation">Date of Probation:</label>
+                        <input type="date" id="date_of_probation" name="date_of_probation" value="{{ employee.date_of_probation }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="profile_picture">Profile Picture:</label>
+                        <input type="file" id="profile_picture" name="profile_picture">
+                    </td>
+                    <td>
+                        <label for="annual_ctc">Annual CTC:</label>
+                        <input type="text" id="annual_ctc" name="annual_ctc" value="{{ employee.annual_ctc }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="nominee">Nominee:</label>
+                        <input type="text" id="nominee" name="nominee" value="{{ employee.nominee }}">
+                    </td>
+                    <td>
+                        <label for="nominee_relation">Nominee Relation:</label>
+                        <input type="text" id="nominee_relation" name="nominee_relation" value="{{ employee.nominee_relation }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="CL">CL:</label>
+                        <input type="number" id="CL" name="CL" value="{{ employee.CL }}">
+                    </td>
+                    <td>
+                        <label for="SL">SL:</label>
+                        <input type="number" id="SL" name="SL" value="{{ employee.SL }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="PL">PL:</label>
+                        <input type="number" id="PL" name="PL" value="{{ employee.PL }}">
+                    </td>
+                    <td>
+                        <label for="UL">UL:</label>
+                        <input type="number" id="UL" name="UL" value="{{ employee.UL }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="wfh_count">WFH Count:</label>
+                        <input type="number" id="wfh_count" name="wfh_count" value="{{ employee.wfh_count }}">
+                    </td>
+                    <td>
+                        <label for="od_count">OD Count:</label>
+                        <input type="number" id="od_count" name="od_count" value="{{ employee.od_count }}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit">Update</button>
+    </form>
+</section>
+{% endblock main_content %}

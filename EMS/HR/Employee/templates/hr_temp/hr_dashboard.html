@@ -1,0 +1,1196 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+
+<style>
+ /* body{
+  overflow-y: hidden;
+ } */
+
+ .card {
+        max-width: 95%;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        border-radius : 20px;
+        
+    }
+ .content-header{
+  padding: 0px;
+ }
+ .container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 90%;
+  }
+  .content {
+  padding-bottom: 5%;
+  /*width: 80vw; /* 100% of viewport width */
+  /*height: 80vh; 100% of viewport height */
+  /* Add any other styles you need */
+}
+
+/* calendar start */ 
+.section_calendar {
+  background-color: rgb(250, 248, 245);
+    border: 1px solid #000;
+    border-radius: 20px;
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    margin: 1%;
+  }
+  .container_calendar {
+  width: 90%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 5%;
+}
+
+
+.header {
+  padding: 3%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(163, 163, 151);;
+  color: rgba(255, 99, 132);
+  border-radius: 10px 10px 0 0;
+}
+
+.header #month {
+  font-size: 18px;
+  font-weight: 600;
+}
+.month_btn{
+    display: flex;
+    flex-direction: row;
+}
+
+button {
+  width: 45px;
+  height: 35px;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  background-color: rgba(228, 188, 140, 0.384);;
+  color: rgba(255, 99, 132);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color:rgba(255, 99, 132, 0.6);
+  color: white;
+}
+
+#btnBack{
+    margin-right: 25%;
+}
+
+.weekdays {
+  display: flex;
+  background-color: rgb(27, 27, 27);
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.weekdays div {
+  flex: 1;
+  padding: 3px 0;
+  text-align: center;
+
+}
+
+
+#calendar {
+  display: grid;
+  grid-template-columns: 14.5% 14.5% 14.5% 14.5%  14.5% 14.5% 14.5%;
+  grid-area: span;
+  background-color: rgb(255, 255, 255);
+
+}
+ .day {
+  width: 38px;
+  height: 38px;
+  flex: 1;
+  text-align: center;
+  margin-left: 3%;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #7f8fa6;
+  font-weight: 500;
+  position: relative;
+}
+
+.day:hover {
+  background-color: rgba(112, 111, 211, 0.1);
+  color: #706fd3;
+}
+
+
+/* days having events */
+.has-events {
+    background-color: rgba(112, 111, 211,0.5);
+    color: black;
+}
+.has-birthday{
+  background-color: dodgerblue;
+    color: black;
+}
+.has-both{
+  background-color: orange;
+    color: black;
+}
+.has-anniversary{
+  background-color: magenta;
+    color: black;
+}
+
+
+
+#currentDay {
+  background-color: #706fd3;
+  color: #fff;
+}
+
+.event {
+      font-size: 10px;
+      padding: 3px;
+      background-color: #3d3d3d;
+      color: #fff;
+      border-radius: 5px;
+      max-height: 55px;
+      overflow: hidden;
+    }
+
+    .event.holiday {
+      background-color: palegreen;
+      color: #3d3d3d;
+    }
+
+    .plain {
+      cursor: default;
+      background-color: rgba(228, 188, 140, 0.384);;
+      color: #ccc;
+      border: none;
+    }
+.event_adding{
+    margin-top: 5%;
+}
+    #eventCard {
+      display: none;
+      position: absolute;
+      margin-top: -260px;
+      margin-left: -100px;
+      width: 30%;
+      background-color: rgba(228, 188, 140);
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+   
+    #eventCard h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    #txtTitle {
+      padding: 5px;
+      width: 85%;
+      margin-left: 7%;
+      margin-bottom: 15px;
+      border-radius: 3px;
+      outline: none;
+      border: 1px solid #cbd4c2;
+      font-size: 14px;
+    }
+
+    .event_btn{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    #btnSave, #btnDelete, .btnClose {
+      background-color: #2f3542;
+      border: none;
+      padding: 10px 35px;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      margin-right: 2px;
+    }
+
+    .btnClose:hover{
+      background-color: #2f3542;
+      color: white;
+    }
+
+    #btnSave {
+      background-color: #2ed573;
+    }
+
+    /* #btnDelete {
+      background-color: #ea2027;
+    } */
+
+    #eventList{
+        display: flex;
+        flex-direction: column;
+    }
+    #eventList ul li{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-content:baseline;
+    }
+
+    #eventList ul li p{
+      text-align: center;
+      
+    }
+    #eventList ul li button{
+      width: 45px;
+      height: 35px;
+      border: none;
+      outline: none;
+      border-radius: 50%;
+      color: black;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
+    }
+    #eventList ul li button:hover{
+      background-color: none !important;
+      color: black;
+    }
+
+    .error {
+      border-color: #ea2027 !important;
+    }
+  
+/* calendar end */
+
+
+/* .credits {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  color: #fff;
+  background-color: black;
+}
+.credits a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.credits a:hover {
+  text-decoration: underline;
+} */
+
+
+.section {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #000;
+    border-radius: 20px;
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    height: 310px;
+    margin: 1%;
+  }
+
+  h1, h2 {
+    color: #333;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 5px;
+  }
+  .attendance-summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.summary-item i {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.summary-item span {
+  margin-right: 5px;
+}
+
+
+/* You can use Font Awesome for icons or replace them with your preferred icon library */
+
+
+.upcoming-birthdays, .work-anniversaries, .leave_request{
+    height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 5px;
+    scrollbar-color:  #e4bc8c #e4bc8c62;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+  }
+
+  .work-anniversaries{
+    height: 180px;
+  }
+
+  .birthday-item {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.birthday-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.birthday-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: bold;
+  color: #333;
+}
+
+.date {
+  color: black;
+}
+.anniversary-item {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.anniversary-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  color: #ff69b4; /* Pink color for confetti icon */
+}
+
+.anniversary-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: bold;
+  color: #333;
+}
+
+canvas {
+  width: 85% !important;
+  height: 85% !important;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+  /* Common styles */
+
+/* Styles for screens smaller than 600px */
+@media screen and (max-width: 600px) {
+  .container_calendar {
+    width: 90%; /* Adjust as needed */
+    margin-left: 5%; /* Adjust as needed */
+  }
+
+  .header {
+    padding: 5%;
+  }
+
+  .header #month {
+    font-size: 20px; /* Adjust as needed */
+  }
+
+  .month_btn button {
+    width: 40px; /* Adjust as needed */
+    height: 30px; /* Adjust as needed */
+    font-size: 16px; /* Adjust as needed */
+  }
+
+  .weekdays div {
+    font-size: 12px; /* Adjust as needed */
+  }
+
+  .day {
+    width: 45px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
+    font-size: 12px; /* Adjust as needed */
+  }
+
+  #eventCard {
+    width: 90%; /* Adjust as needed */
+    padding: 10px; /* Adjust as needed */
+  }
+
+  #txtTitle {
+    width: 80%; /* Adjust as needed */
+    margin-left: 10%; /* Adjust as needed */
+    font-size: 12px; /* Adjust as needed */
+  }
+
+  .event_btn button {
+    padding: 8px 25px; /* Adjust as needed */
+    font-size: 14px; /* Adjust as needed */
+  }
+}  
+
+.section {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .section h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    .expenses-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        max-height: 240px;
+        overflow-y: auto;
+    }
+
+    .expenses-list li {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.3s ease;
+    }
+
+    .expenses-list li:last-child {
+        border-bottom: none;
+    }
+
+    .expenses-list li:hover {
+        background-color: #f0f0f0;
+    }
+
+    .expenses-list li .employee-name {
+        font-weight: bold;
+        color: #502805;
+    }
+
+    .expenses-list li .amount {
+        float: right;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    /* Scrollbar styles */
+    .expenses-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .expenses-list::-webkit-scrollbar-thumb {
+        background-color: #bbb;
+        border-radius: 5px;
+    }
+
+    .expenses-list::-webkit-scrollbar-thumb:hover {
+        background-color: #999;
+    }
+    .section_header {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  
+  margin: 0; /* Remove default margin */
+}
+
+
+
+
+  
+  
+
+    .a-text{
+      margin-left: 5%;
+      color: #000000;
+
+    }
+    a{
+      color: #000;
+    }
+.dropdown{
+  background-color: #e7dedf73;
+}  
+
+.content {
+  margin: 20px;
+}
+
+form {
+  display: inline-block;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 50px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Styling the options inside the select */
+select option {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Styling for the submit button (not provided in the original HTML) */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Styling for the selected option */
+select option:checked {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  form {
+    display: block;
+    text-align: center;
+  }
+}
+  
+
+   
+</style>
+
+
+<section class="card">
+<div class="content">
+  <div class="comp">
+    <form id="companyForm" method="get" action="{% url 'dashboard' %}">
+      <label for="company_name">Select Company:</label>
+      <select name="company_name" id="company_name">
+        <option value="">All Companies</option>
+        {% for company in companies %}
+          <option value="{{ company.company_name }}" {% if company.company_name == selected_company_name %}selected{% endif %}>{{ company.company_name }}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+
+ 
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3>{{ total_employees }}</h3>
+          <p>Total Employees</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="dropdown">
+          <a type="button" id="dropdownMenuButtonWFH" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </a>
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{  employees_present_count }}</h3>
+          <p>Employees Present</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="dropdown">
+          <a type="button" id="dropdownMenuButtonWFH" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            
+          </a>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>{{ on_leave_today }}</h3>
+          <p>Employees On Leave</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-user-times"></i>
+        </div>
+        <div class="dropdown">
+          <a class="a-text" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            More Info
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for employee in employees_on_leave %}
+              <a class="dropdown-item" href="#">{{ employee.user.first_name }} {{ employee.user.last_name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-warning">
+        <div class="inner">
+          <h3>{{ wfh_today }}</h3>
+          <p>Employees on WFH/OD</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-home"></i>
+        </div>
+        <div class="dropdown">
+          <a  class="a-text" type="button" id="dropdownMenuButtonWFH" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More Info
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonWFH">
+            {% for employee in employees_on_wfh %}
+              <a class="dropdown-item" href="#">{{ employee.user.first_name }} {{ employee.user.last_name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+    
+    
+    <!-- Employee Statistics -->
+    <div class="section">
+      <h2>Employee Statistics</h2>
+      <canvas id="employeeChart"></canvas>
+    </div>
+
+    
+        <!-- Employee Statistics -->
+        <div class="section">
+          
+          <h2>Expenses Statistics</h2>
+          
+          <ul class="expenses-list">
+              {% for expense in expenses_by_employee %}
+                  <li>
+                    <span class="amount">₹ {{ expense.total_reimbursement }}</span>
+                      <span class="employee-name">{{ expense.employee__user__first_name }}</span>
+                  </li>
+              {% endfor %}
+          </ul>
+      </div>
+        
+      
+        
+    
+
+    <!-- Recent Leave Requests -->
+    <div class="section">
+      <h2>Recent Leave Requests</h2>
+      <div class="leave_request">
+        <ul>
+          {% for leave_request in recent_leave_requests %}
+            <li>{{ leave_request.employee.user.first_name }} {{ leave_request.employee.user.last_name }} - {{ leave_request.leave_type }} ({{ leave_request.status }})</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Upcoming Birthdays -->
+    <div class="section">
+      <h2>Upcoming Birthdays</h2>
+      <div class="upcoming-birthdays">
+        <ul>
+          {% for employee in upcoming_birthdays %}
+            <li class="birthday-item">
+              <span class="birthday-icon">&#127874;</span>
+              <span class="birthday-details">
+                <span class="name">{{ employee.user.first_name }} {{ employee.user.last_name }}</span>
+                <span class="date">{{ employee.date_of_birth|date:"F j" }}</span>
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Upcoming Work Anniversaries -->
+    <div class="section">
+      <h2>Upcoming Work Anniversaries</h2>
+      <div class="work-anniversaries">
+        <ul>
+          {% for employee in upcoming_anniversaries %}
+            <li class="anniversary-item">
+              <span class="anniversary-icon">&#127881;</span>
+              <span class="anniversary-details">
+                <span class="name">{{ employee.user.first_name }} {{ employee.user.last_name }}</span>
+                <span class="date">{{ employee.date_of_joining|date:"F j" }}</span>
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <!-- Upcoming Work Anniversaries -->
+    <div class="section">
+      <h5>Upcoming Marriage Anniversaries</h5>
+      <div class="work-anniversaries">
+        <ul>
+          {% for employee in upcoming_wed_anniversary %}
+            <li class="anniversary-item">
+              <span class="anniversary-icon">&#127881;</span>
+              <span class="anniversary-details">
+                <span class="name">{{ employee.user.first_name }} {{ employee.user.last_name }}</span>
+                <span class="date">{{ employee.upcoming_wed_anniversary|date:"F j" }}</span>
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    
+    <!-- section calendar start -->
+    <div class="section_calendar">
+      <div class="container_calendar">
+        <div class="header">
+          <div id="month"></div>
+          <div class="month_btn">
+            <button id="btnBack"><i class="fa fa-angle-left"></i></button>
+            <button id="btnNext"><i class="fa fa-angle-right"></i></button>
+          </div>
+        </div>
+        <div class="weekdays grid-container">
+          <div class="grid-item">Sun</div>
+          <div class="grid-item">Mon</div>
+          <div class="grid-item">Tue</div>
+          <div class="grid-item">Wed</div>
+          <div class="grid-item">Thu</div>
+          <div class="grid-item">Fri</div>
+          <div class="grid-item">Sat</div>
+        </div>
+        <div id="calendar"></div>
+      </div>
+      <div id="eventCard">
+        <div id="eventList">
+            <ul id="all_events"></ul>
+        </div>
+        <div class="event_adding">
+            <!-- <h5>Add Event</h5> -->
+            <input type="text" id="txtTitle" placeholder=" Add Event">
+            <div class="event_btn">
+                <button id="btnSave">Save</button>
+                <!-- <button id="btnDelete">Delete</button> -->
+                <button class="btnClose">Close</button>
+            </div>
+        </div>
+      </div>
+    </div> <!-- section calendar end -->
+  </div> <!-- container div close a-->
+</div>
+</div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var selectElement = document.getElementById('company_name');
+    
+    // Listen for change in select element
+    selectElement.addEventListener('change', function() {
+      // Submit the form when a selection is made
+      document.getElementById('companyForm').submit();
+    });
+  });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+       const holidays = [];
+    function fetchHolidays() {
+    fetch('/api/holidays/') // Replace '/api/holidays/' with the actual URL of your backend API endpoint
+        .then(response => response.json())
+        .then(data => {
+            // Once you receive the holiday data, call the function to add holidays to the calendar
+            addHolidaysToCalendar(data);
+        })
+        .catch(error => {
+            console.error('Error fetching holidays:', error);
+        });
+}
+function addHolidaysToCalendar(holidays) {
+    holidays.forEach(holiday => {
+        const holidayDate = holiday.hdate;
+        const holidayName = holiday.holiday;
+        // Add holiday to the calendar (similar to your existing addHolidaysToCalendar function)
+        // ...
+    });
+}     
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('employeeExpenseChart').getContext('2d');
+            var employeeNames = [{% for expense in expenses_by_employee %}"{{ expense.employee_id }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
+            var totalExpenses = [{% for expense in expenses_by_employee %}{{ expense.total_amount }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+            var chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: employeeNames,
+                    datasets: [{
+                        label: 'Total Expenses',
+                        data: totalExpenses,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+    function addHolidaysToCalendar() {
+    holidays.forEach(holiday => {
+        const holidayDate = holiday.hdate;
+        const holidayName = holiday.holiday;
+
+        // Find the day box corresponding to the holiday date
+        const dayBox = document.querySelector(`#calendar .day[data-date="${holidayDate}"]`);
+        
+        if (dayBox) {
+            // Create a holiday element
+            const holidayElement = document.createElement('div');
+            holidayElement.classList.add('holiday');
+            holidayElement.textContent = holidayName;
+            
+            // Append the holiday element to the day box
+            dayBox.appendChild(holidayElement);
+            dayBox.classList.add("has-events"); // Mark the day as having events
+        }
+    });
+}
+
+
+    
+    // fetching upcoming dates 
+    var UpcomingAnniversaries = [];
+    {% for employee in upcoming_anniversaries %}    
+    UpcomingAnniversaries.push({"name" : '{{ employee.user.first_name }} {{ employee.user.last_name }}', "date" : '{{ employee.date_of_joining | date:"d - m - Y"}}'})
+    {% endfor %}
+
+    var UpcomingBirthdays = [];
+    {% for employee in upcoming_birthdays %}   
+    UpcomingBirthdays.push({"name" : '{{ employee.user.first_name }} {{ employee.user.last_name }}', "date" : '{{ employee.date_of_birth | date:"d - m - Y"}}'})
+    {% endfor %}
+
+    // console.log("aNNIVERSARIES ",UpcomingAnniversaries);
+    // console.log("birthdays:  ", UpcomingBirthdays);
+
+    
+
+    const calendar = document.querySelector("#calendar");
+    const monthBanner = document.querySelector("#month");
+    let navigation = 0;
+    let clicked = null;
+    let events = localStorage.getItem("events") ? JSON.parse(localStorage.getItem("events")) : {};
+    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+
+    // Function to check for events (anniversaries, birthdays) on a specific date
+    function checkForEvents(dateText) {
+        const anniversaries = UpcomingAnniversaries.filter(employee => employee.date === dateText);
+        const birthdays = UpcomingBirthdays.filter(employee => employee.date === dateText);
+
+        return { anniversaries, birthdays };
+    }
+
+
+    function loadCalendar() {
+      const dt = new Date();
+
+      if (navigation != 0) {
+        dt.setMonth(new Date().getMonth() + navigation);
+      }
+      const day = dt.getDate();
+      const month = dt.getMonth();
+      const year = dt.getFullYear();
+      monthBanner.innerText = `${dt.toLocaleDateString("en-us", {
+        month: "long"
+      })} ${year}`;
+      calendar.innerHTML = "";
+      const dayInMonth = new Date(year, month + 1, 0).getDate();
+      const firstDayofMonth = new Date(year, month, 1);
+      const dateText = firstDayofMonth.toLocaleDateString("en-us", {
+        weekday: "long",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      });
+
+      const dayString = dateText.split(", ")[0];
+      const emptyDays = weekdays.indexOf(dayString);
+
+      for (let i = 1; i <= dayInMonth + emptyDays; i++) {
+        const dayBox = document.createElement("div");
+        dayBox.classList.add("day");
+        dayBox.classList.add('grid-item');
+        const monthVal = month + 1 < 10 ? "0" + (month + 1) : month + 1;
+        const dateVal = i - emptyDays < 10 ? "0" + (i - emptyDays) : i - emptyDays;
+        const dateText = `${dateVal} - ${monthVal} - ${year}`;
+
+        // console.log(monthVal);
+        // console.log(dateVal);
+
+        if (i > emptyDays) {
+          dayBox.innerText = i - emptyDays;
+          // Event Day
+          const eventOfTheDay =  events[dateText];
+
+          // Holiday
+          const holidayOfTheDay = holidays.find(e => e.hdate == dateText);
+
+          // Check for events (anniversaries, birthdays)
+          const { anniversaries, birthdays } = checkForEvents(dateText);
+
+          if (i - emptyDays === day && navigation == 0) {
+            dayBox.id = "currentDay";
+          }
+          
+          if (eventOfTheDay) {
+            eventOfTheDay.forEach(event => {
+                const eventDiv = document.createElement("div");
+                eventDiv.style.backgroundColor = "rgba(112, 111, 211, 0.1)";
+                dayBox.appendChild(eventDiv);
+            });
+            dayBox.classList.add("has-events");
+        }
+        if (holidayOfTheDay) {
+            const eventDiv = document.createElement("div");
+            dayBox.appendChild(eventDiv);
+            dayBox.classList.add("has-events");
+        }
+        if (anniversaries.length > 0) {
+                dayBox.classList.add("has-anniversary");
+        }
+        if (birthdays.length > 0) {
+            dayBox.classList.add("has-birthday");
+        }
+        if (anniversaries.length > 0 && birthdays.length > 0) {
+            dayBox.classList.add("has-both");
+        }
+
+          dayBox.addEventListener("click", (e) => {
+            showCard(dateText, e.target);
+          });
+        } else {
+          dayBox.classList.add("plain");
+        }
+        calendar.append(dayBox);
+      }
+    }
+
+    function buttons() {
+      const btnBack = document.querySelector("#btnBack");
+      const btnNext = document.querySelector("#btnNext");
+    //   const btnDelete = document.querySelector("#btnDelete");
+      const btnSave = document.querySelector("#btnSave");
+      const closeButtons = document.querySelectorAll(".btnClose");
+      const txtTitle = document.querySelector("#txtTitle");
+
+      btnBack.addEventListener("click", () => {
+        navigation--;
+        loadCalendar();
+      });
+      btnNext.addEventListener("click", () => {
+        navigation++;
+        loadCalendar();
+      });
+
+      closeButtons.forEach((btn) => {
+        btn.addEventListener("click", closeCard);
+      });
+      
+    //   btnDelete.addEventListener("click", function () {
+    //      // Delete the specific event from the events array
+    //     delete events[clicked];
+    //     localStorage.setItem("events", JSON.stringify(events));
+    //     closeCard();
+    // });
+
+    btnSave.addEventListener("click", function () 
+    {
+        if (txtTitle.value) {
+        txtTitle.classList.remove("error");
+        if (!events[clicked]) {
+            events[clicked] = [];
+        }
+        events[clicked].push({
+            title: txtTitle.value.trim()
+        });
+        txtTitle.value = "";
+        localStorage.setItem("events", JSON.stringify(events));
+        closeCard();
+        } else {
+        txtTitle.classList.add("error");
+        }
+    });
+}
+
+const eventCard = document.querySelector("#eventCard");
+
+function showCard(dateText, dayBox) {
+    clicked = dateText;
+
+    const { anniversaries, birthdays } = checkForEvents(dateText);
+    const eventOfTheDay = events[dateText];
+    const eventList = document.querySelector("#eventList ul");
+    eventList.innerHTML = ""; // Clear previous event list
+
+    anniversaries.forEach(anniversary => {
+        const listItem = document.createElement("li");
+        listItem.textContent = anniversary.name + " Anniversary!";
+        eventList.appendChild(listItem);
+    });
+
+    birthdays.forEach(birthday => {
+        const listItem = document.createElement("li");
+        listItem.textContent = birthday.name + " Birthday!";
+        eventList.appendChild(listItem);
+    });
+
+
+    if (eventOfTheDay && eventOfTheDay.length > 0) {
+        eventOfTheDay.forEach(event => {
+            const listItem = document.createElement("li");
+            const setItemText = document.createElement("p");
+            setItemText.textContent = event.title;
+            // listItem.textContent = event.title;
+            
+            // Create delete button for each event
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "delete";
+             // Use a closure to capture the values of date and title
+             deleteButton.addEventListener("click", () => {
+                if (events[dateText]) {
+                    events[dateText] = events[dateText].filter(evt => evt.title !== event.title);
+                    localStorage.setItem("events", JSON.stringify(events));
+                    loadCalendar();
+                }
+            });
+            listItem.appendChild(setItemText);
+            listItem.appendChild(deleteButton);
+            eventList.appendChild(listItem);
+        });
+
+    } else {
+        const listItem = document.createElement("li");
+        listItem.textContent = "No events";
+        eventList.appendChild(listItem);
+    }
+
+    const rect = dayBox.getBoundingClientRect();
+    eventCard.style.display = "block";
+    eventCard.style.top = `${rect.top + window.scrollY + dayBox.offsetHeight + 5}px`;
+    eventCard.style.left = `${rect.left + window.scrollX}px` - 10;
+}
+
+    function closeCard() {
+      eventCard.style.display = "none";
+      loadCalendar();
+    }
+
+    buttons();
+    loadCalendar();
+    addHolidaysToCalendar();
+
+
+
+    // JavaScript code to create charts using Chart.js
+    var ctx = document.getElementById('employeeChart').getContext('2d');
+    var employeeChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Employees Present', 'Employees on Leave', 'Employees Working from Home'],
+        datasets: [{
+          label: 'Employee Statistics',
+          data: [ {{ total_employees }} , {{ on_leave_today }} , {{ wfh_today }} ] ,
+          backgroundColor: [
+            'HSLA(114,47%,75%,1)',
+            'HSLA(5,60%,75%,1)',
+            'HSLA(30,60%,75%,1)'
+          ],
+          
+          borderWidth :0.5
+        }]
+      },    
+});
+
+</script>
+
+
+
+{% endblock main_content %}

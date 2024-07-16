@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+ /* styles.css */
+/* styles.css */
+        /* styles.css */
+/* styles.css */
+/* Existing styles.css content */
+/* Existing styles.css content */
+/* Updated styles.css content */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    /* Updated gradient with a lighter shade of dark blue */
+    background: linear-gradient(to right, #b6fbff, #4169e1); /* Royal Blue instead of Navy Blue */
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9); /* Adjusted opacity for better visibility */
+    padding: 30px;
+    border-radius: 50px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    width: 400px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    transform: translateY(-5px);
+}
+
+/* No changes needed for the rest of the CSS */
+
+
+/* No changes needed for the rest of the CSS */
+
+/* No changes needed for the rest of the CSS */
+
+
+.card-header {
+    margin-bottom: 25px; /* More spacing between header and form */
+    text-align: center;
+    font-size: 24px; /* Larger font size for emphasis */
+    color: #333; /* Darker text for better readability */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Increased spacing for clarity */
+}
+
+.form-group label {
+    display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 16px;
+            font-style: italic; /* Italic style for labels */
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px; /* Larger padding for better touch interaction */
+    border: 1px solid #ccc; /* Subtle border color */
+    border-radius: 20px; /* Smoothed border radius */
+    box-sizing: border-box;
+    font-size: 14px; /* Comfortable reading font size */
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent input fields for consistent design */
+}
+
+button {
+    width: 100%;
+    padding: 12px 15px; /* More padding for a better click area */
+    border: none;
+    border-radius: 20px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px; /* Larger font size for button */
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Deeper blue on hover */
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>Login</h2>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                <input type="text" type="text" id="id_username" name="username" placeholder="Enter Username" required>
+            </div>
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                <input type="password" id="id_password" name="password"  placeholder="Enter Password" required oncopy="return false" onpaste="return false" oncut="return false">
+            </div>
+            <button id="bt1" type="submit">Log In</button>
+        </form>
+    </div>
+</body>
+</html>

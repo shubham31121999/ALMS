@@ -1,0 +1,552 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    height: 100%;
+    margin: 2% auto;
+    background-color: #fff;
+    border-radius: -5%;
+    box-shadow: 0 0.2% 0.5% rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -5%;
+    border-top-right-radius: -5%;
+    margin-bottom: 2%;
+}
+
+.card-header h2 {
+    text-align: center;
+    color: #fff;
+}
+
+.table thead {
+    background-color: #89CFF0;
+}
+
+h1 {
+    text-align: center;
+    color: #1434A4;
+    margin-bottom: 1%;
+}
+
+.btn {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.7%;
+}
+
+.user_welcome {
+    font-family: 'Times New Roman', Times, serif;
+    background: -webkit-linear-gradient(rgb(84, 4, 65, 0.7), #e8523e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.birthday-message {
+    background-color: #ffeeba;
+    border: 0.1% solid #ffc107;
+    color: #856404;
+    padding: 1%;
+    margin-bottom: 2%;
+    border-radius: 0.5%;
+    text-align: center;
+}
+
+.holiday-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2%;
+}
+
+.holiday-table th, .holiday-table td {
+    padding: 0.8%;
+    border: 0.1% solid #ddd;
+}
+
+.holiday-table th {
+    background-color: #007bff;
+    color: #333;
+    font-weight: bold;
+    text-align: left;
+}
+
+.holiday-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.holiday-table tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+.birthday-card {
+    /* max-width: 30%;
+    margin: 2% auto;
+    perspective: 1000px; */
+
+    max-width: 100%;
+    margin-left: 15% auto;
+    /* margin-left: 1%; */
+    /* perspective: 1000px; */
+}
+
+.birthday-card-inner {
+    position: relative;
+    width: 100%;
+    height: 425px;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 0.2% 0.5% rgba(0,0,0,0.1);
+    border-radius: -5%;
+
+    
+}
+
+.birthday-card:hover .birthday-card-inner {
+    transform: rotateY(180deg);
+}
+
+.birthday-card-front, 
+.birthday-card-back {
+    width: 83%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    transition: transform 0.6s;
+    margin-left: 8%;
+    border-radius: -5%; /* Match the border-radius of the card */
+    
+}
+
+.birthday-card-front {
+    /* background-image: url('/static/HBD.jpg'); */
+    background-size: cover;
+    background-position: center;
+    
+}
+
+.birthday-card-back {
+    /* background-color: #fff; */
+    background-image: url('/static/HBDF3.3.jpg');
+    color: black;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url("/static/HBDF3.3.jpg");
+    background-size: cover; /* Adjust the size */
+    background-position: top left; /* Adjust the position */
+}
+
+.birthday-card-back .text-container {
+    padding: 2%;
+}
+
+.birthday-card-back .text-container p {
+    margin: 1% 0;
+}
+
+.imgset {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -21.5%;
+}
+
+.imgset img {
+    width: 100%;
+    box-shadow: 0 0.6% 1.1% 0.7% rgba(0, 0, 0, 0.22);
+    border-radius: 0.5%;
+}
+
+.anniversary-card {
+    max-width: 100%;
+    /* margin: 2% auto; */
+    margin-left: 15%;
+    /* perspective: 1000px; */
+}
+
+.anniversary-card-inner {
+    position: relative;
+    width: 80%;
+    height: 425px;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 0.2% 0.5% rgba(0,0,0,0.1);
+    border-radius: -5%;
+}
+
+.anniversary-card:hover .anniversary-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* .anniversary-card-front, .anniversary-card-back { */
+    /* position: absolute; */
+    /* width: 100%; */
+    /* height: 10%; */
+    /* backface-visibility: hidden; */
+    /* border-radius: -0.5%; */
+/* } */
+
+/* .anniversary-card { */
+    /* width: 100%; Adjust this percentage as needed */
+    /* height: 100%; Adjust this percentage as needed */
+    /* border-radius: -5%; Match the border-radius of the card */
+    /* perspective: 1000px; Add perspective to the parent to make the 3D effect work */
+/* } */
+
+.anniversary-card-front,
+.anniversary-card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    transition: transform 0.6s;
+    border-radius: -5%; /* Match the border-radius of the card */
+}
+
+.anniversary-card-front {
+    background-image: url('/static/2.jpg'); /* Set the image URL */
+    background-size: cover; /* Ensure the image covers the container */
+    background-position: center; /* Center the background image */
+}
+
+.anniversary-card-back {
+    background-color: #fff;
+    color: black;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image:  url("/static/1.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+
+.anniversary-card-back .text-container {
+    padding: 2%;
+}
+
+.anniversary-card-back .text-container p {
+    margin: 1% 0;
+}
+
+.footer-text {
+    position: absolute;
+    bottom: 10px;  /* Adjust as needed */
+    right: 10px;   /* Adjust as needed */
+    text-align: right;
+}
+.footer-t {
+    position: absolute;
+    bottom: 10px;  /* Adjust as needed */
+    left: 10px;   /* Adjust as needed */
+    text-align: left;
+}
+.footer-t p,
+.footer-text p {
+    color: #000; /* Black color */
+    font-weight: bold;
+}
+.shub-shub p {
+            color: #000; /* Black color for text */
+            font-weight: bold; /* Bold font weight */
+        }
+
+
+
+/* styles.css */
+
+/* styles.css */
+
+/* styles.css */
+
+.birthday-message {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1%;
+    margin-bottom: 2%;
+    margin-top: 1%;
+    box-shadow: 0 0 1% rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensure the content doesn't overflow */
+    white-space: nowrap; /* Prevents wrapping of content */
+}
+
+.birthday-message p {
+    font-size: 1vw; /* Using viewport width for font size */
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    padding: 0.5% 0;
+    animation: marquee 20s linear infinite; /* Adjust duration and timing function as needed */
+}
+
+.birthday-message:hover p {
+    animation-play-state: paused; /* Pause animation on hover */
+}
+
+.birthday-message p strong {
+    font-weight: bold;
+    color: #007bff; /* Blue color, adjust as needed */
+}
+
+@keyframes marquee {
+    from { transform: translateX(100%); } /* Move text initially out of view */
+    to { transform: translateX(-100%); } /* Move text to the left */
+}
+
+.hbd{
+    font-family: 'Pacifico', cursive;
+    margin-left: 50%;
+    font-size: 45px;
+    color: #96291b;
+}
+.hbd1{
+    font-family: 'Dancing Script', cursive;
+    font-size: 25px;
+    color: #96291b;
+}
+
+.footer-t{
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: #96291b;
+}
+
+.footer-text{
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: #96291b;
+}
+
+.com-name{
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: #96291b;
+}
+
+
+</style>
+
+<section class="content">
+    <h1 class="user_welcome">Welcome {{ employee.user.first_name }}</h1>
+    {% for emp in birthday_employees %}
+    <div class="birthday-message">
+        <p><strong>Today is {{ emp.user.first_name }}'s Birthday!</strong></p>
+    </div>
+{% endfor %}
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ employee.late_min_ava }}</h3>
+                        <p>Late Time Available</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ employee.SL }}</h3>
+                        <p>Available Sick Leave</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>{{ employee.CL }}</h3>
+                        <p>Available Casual Leave</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-3 col-6">
+                <!-- small card -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ employee.PL }}</h3>
+                        <p>Available Paid Leave</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Birthday message -->
+    {% if birthday_message %}
+    <div class="birthday-card">
+        <div class="birthday-card-inner">
+            <div class="birthday-card-front">
+                <div class="imgset">
+                    <img src="/static/HBD.jpg" alt="Birthday Image">
+                </div>
+            </div>
+            <div class="birthday-card-back">
+                <div class="text-container">
+                    <p class="hbd"><strong> Happy Birthday</strong></p>
+                    <p class="hbd1" id="head">Dear {{ employee.user.first_name }},</p>
+                    <p class="hbd1">May you be gifted with life's biggest joys & never ending bliss.</p>
+                    
+
+                    
+                </div>
+                
+
+                <div class="footer-t">
+                    <p>Prashant Vaidya</p>
+                    <p>CMD</p>
+                    
+                </div>
+
+                <div class="footer-text">
+                    <p>{{ employee.reporting }}</p>
+                    <p>Reporting Head</p>
+                </div>
+                <div class ="shub-shub">
+                    
+                    <p class="com-name"> ~ Apollo Family</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+
+    {% if anniversary_message %}
+    <div class="anniversary-card">
+        <div class="anniversary-card-inner">
+            <div class="anniversary-card-front"></div> <!-- Use CSS to set the background image -->
+            <div class="anniversary-card-back">
+                <div class="text-container">
+                    <p id="head">Dear {{ employee.user.first_name }}, Happy Marriage Anniversary</p>
+                    <p>Congratulations on reaching this milestone! </p>
+                    <p>~ Apollo Family</p>
+
+
+                    <p></p>
+                    <p></p>
+                    <p></p>
+
+                    <div class="footer-t">
+                        <p>Prashant Vaidya</p>
+                        <p>CMD</p>
+                        
+                    </div>
+
+                    <div class="footer-text">
+                        <p>{{ employee.reporting }}</p>
+                        <p>Reporting Head</p>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Attendance Records</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>In Time (hr:min)</th>
+                        <th>Out Time (hr:min)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in attendances %}
+                    {% if not attendance.wfhstatus and not attendance.wfhodremark %}
+                    <tr>
+                        <td>{{ attendance.date }}</td>
+                        <td>{{ attendance.str_intime }}</td>
+                        <td>{{ attendance.str_outtime }}</td>
+                        <td>
+                            {% if not attendance.outtime %}
+                            <form action="{% url 'update_outtime' attendance.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-block bg-gradient-success" type="submit">Update Out Time</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Holiday List</h2>
+        </div>
+        <div class="card-body">
+            <table class="holiday-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for holiday in holidays %}
+                        <tr>
+                            <td>{{ holiday.date }}</td>
+                            <td>{{ holiday.description }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

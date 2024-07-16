@@ -1,0 +1,162 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+    .btn {
+        display: block;
+        margin: 0 auto;
+        width: 35%;
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 85%;
+        padding:7px;
+        font-size:18px;
+    }
+    .card {
+        max-width: 95%;
+        height: 100%;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .card-header{
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-top-left-radius:20px;
+        border-top-right-radius: 20px;
+        margin-bottom: 20px;
+    }
+    .card-header h2 {
+        text-align: center;
+        color: #fff;
+    }
+    #month, #year{
+        width: 90%;
+    }
+
+    .card-body .first_row{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    .custom-file{
+        margin: 4% 50%;
+    }
+  
+   
+</style>
+
+<div class="container-fluid">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Salary Slip Details</h2>
+                        
+                    </div>
+                    <div class="card-body">
+                        
+                        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row first_row">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="employee_id">Employee</label>
+                                        <select name="employee_id" id="employee_id" style="width: 200px;" class="form-control"> 
+                                            <!-- Adjust the width as needed -->
+                                            {% for employee in employees %}
+                                                <option value="{{ employee.pk }}">{{ employee.emp_id }} - {{ employee.user.first_name }} {{ employee.user.last_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                            <label for="month">Month</label>
+                                            <select name="month" id="month" class="form-control">
+                                                <option value="January">January</option>
+                                                <option value="February">February</option>
+                                                <option value="March">March</option>
+                                                <option value="April">April</option>
+                                                <option value="May">May</option>
+                                                <option value="June">June</option>
+                                                <option value="July">July</option>
+                                                <option value="August">August</option>
+                                                <option value="September">September</option>
+                                                <option value="October">October</option>
+                                                <option value="November">November</option>
+                                                <option value="December">December</option>
+                                            </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label for="year">Year</label>
+                                        <select name="year" id="year" class="form-control">
+                                                <option value="2020">2020</option>
+                                                <option value="2021">2021</option>
+                                                <option value="2022">2022</option>
+                                                <option value="2023">2023</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                                <option value="2027">2027</option>
+                                                <option value="2028">2028</option>
+                                                <option value="2029">2029</option>
+                                                <option value="2030">2030</option>
+                                                <option value="2031">2031</option>
+                                                <option value="2032">2032</option>
+                                                <option value="2033">2033</option>
+                                                <option value="2034">2034</option>
+                                                <option value="2035">2035</option>
+                                            
+                                          
+
+                                            <!-- Add options for other years as needed -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <div class="custom-file">
+                                            <label for="salary_slip_file" class="custom-file-label">Upload Salary Slip File (Excel)</label>
+                                            <input type="file" name="salary_slip_file" id="salary_slip_file" class="custom-file-input" accept=".csv">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-block bg-gradient-success">Upload</button>
+                                    </div>
+                                    </div>
+                            </div>
+                        </form>
+                    </div> <!-- card body end -->
+                </div> <!-- card end -->
+            </div> <!-- col md 12 end -->
+        </div> <!-- row div end -->
+    </div> <!-- content div end -->
+</div>
+
+{% endblock main_content %}

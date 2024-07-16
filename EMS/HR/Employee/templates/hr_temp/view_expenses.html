@@ -1,0 +1,118 @@
+{% extends 'hr_temp/base.html' %}
+
+{% block main_content %}
+
+    <style>
+               .card {
+            width: 95%;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: -5%;
+            box-shadow: 0 0.2% 0.5% rgba(0,0,0,0.1);
+            border: none;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1%;
+            border-top-left-radius: -5%;
+            border-top-right-radius: -5%;
+            margin-bottom: 0.5%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.8%;
+            text-align: left;
+            border-bottom: 0.1% solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 2%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination a, .pagination span {
+            display: inline-block;
+            margin: 0 0.5%;
+            padding: 0.5% 1%;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: -5%;
+            text-decoration: none;
+        }
+
+        .pagination .current {
+            font-weight: bold;
+            background-color: transparent;
+            color: #000;
+        }
+    </style>
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h2>Expense Reports</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Emp ID</th>
+                        <th>Emp Name</th>
+                        <th>Date Created</th>
+                        <th>View PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in expense_reports %}
+                    <tr>
+                        <td>{{ report.emp_id }}</td>
+                        <td>{{ report.emp_name }}</td>
+                        <td>{{ report.date_created }}</td>
+                        <td><a href="{{ report.pdf_file.url }}" target="_blank">View PDF</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            {% if expense_reports.has_other_pages %}
+                {% if expense_reports.has_previous %}
+                    <a href="?page=1">First</a>
+                    <a href="?page={{ expense_reports.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span class="current">
+                    Page {{ expense_reports.number }} of {{ expense_reports.paginator.num_pages }}.
+                </span>
+                {% if expense_reports.has_next %}
+                    <a href="?page={{ expense_reports.next_page_number }}">Next</a>
+                    <a href="?page={{ expense_reports.paginator.num_pages }}">Last</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock main_content %}

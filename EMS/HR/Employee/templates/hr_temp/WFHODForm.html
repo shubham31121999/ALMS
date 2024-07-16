@@ -1,0 +1,163 @@
+
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+        #popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 2%; /* Changed to percentage */
+    border-radius: 0.5%; /* Changed to percentage */
+    box-shadow: 0 0 1%; rgba(0, 0, 0, 0.2); /* 10px converted to 1% */
+    z-index: 1000;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    height: 100%;
+    margin: 0% auto; /* 20px converted to 2% */
+    background-color: #fff;
+    border-radius: -5%; /* 20px converted to 2% */
+    box-shadow: 0 0.2% 0.5% rgba(0, 0, 0, 0.1); /* 2px and 5px converted to 0.2% and 0.5% */
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%; /* 10px converted to 1% */
+    border-top-left-radius: -5%; /* 20px converted to 2% */
+    border-top-right-radius: -5%; /* 20px converted to 2% */
+    margin-bottom: 0%; /* 20px converted to 2% */
+}
+
+h2 {
+    text-align: center;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 2%; /* 20px converted to 2% */
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 0.8%; /* 8px converted to 0.8% */
+    border: 0.1% solid #ccc; /* 1px converted to 0.1% */
+    /* border-radius: 0.4%; 4px converted to 0.4% */
+    box-sizing: border-box;
+}
+
+select {
+    height: 3.6%; /* 36px converted to 3.6% */
+}
+
+textarea {
+    width: 100%;
+    padding: 0.8%; /* 8px converted to 0.8% */
+    border: 0.1% solid #ccc; /* 1px converted to 0.1% */
+    border-radius: 0.4%; /* 4px converted to 0.4% */
+    box-sizing: border-box;
+    resize: vertical;
+}
+.btn {
+        display: block;
+        width: 10%;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        padding: 0.5%;
+        /* border-radius: -5%; */
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        margin: 2% auto; /* Center the button horizontally */
+    }
+    .btn:hover {
+        background-color: #218838;
+    }
+</style>
+
+<section class="content">
+    <div class="card card-container">
+        <div class="card-header">
+            <h2>Add WFH/OD</h2>
+        </div>
+        <div class="card-body">
+            {% if messages %}
+                <div class="alert alert-dismissible fade show {% for message in messages %}alert-{{ message.tags }}{% endfor %}" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+            <form id="wfhodForm" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-block bg-gradient-success">Create</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<div id="popup" style="display: none;"></div>
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.getElementById("wfhod-form");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            fetch("{% url 'WFHODForm' %}", {
+                method: "POST",
+                body: new FormData(form)
+            })
+            .then(response => {
+                if (response.ok) {
+                    showPopup("WFHOD created successfully.");
+                    form.reset();
+                } else {
+                    showPopup("Error: Unable to create WFHOD.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showPopup("Error: Unable to create WFHOD.");
+            });
+        });
+
+        function showPopup(message) {
+            var popup = document.getElementById("popup");
+            popup.innerHTML = message;
+            popup.style.display = "block";
+            setTimeout(function() {
+                popup.style.display = "none";
+            }, 3000);
+        }
+    });
+</script>
+{% endblock custom_js %}
+
+

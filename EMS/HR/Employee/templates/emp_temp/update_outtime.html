@@ -1,0 +1,116 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -0.5% solid #ccc;
+    border-radius: -0.5%;
+    margin-bottom: 1%;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -0.5%;
+    border-top-right-radius: -0.5%;
+    margin-bottom: 0%;
+}
+
+h2 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 2%;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 0.8%;
+    border: 0.1% solid #ccc;
+    /* border-radius: 0.4%; */
+    box-sizing: border-box;
+}
+
+select {
+    height: 3.6%;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.8%;
+    border: 0.1% solid #ccc;
+    border-radius: 0.4%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.btn {
+    display: block;
+    width: 12%;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    padding: 0.4%;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    margin: 2% auto; /* Center the button horizontally */
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+</style>
+
+  <section class="content">
+    <div class="card">
+      <div class="card-header">
+        <h2>Update Outtime</h2>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <form method="post">
+            {% csrf_token %}
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Outtime</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td> {{ attendance.date }}</td>
+                <td> {{ attendance.Outtime }}</td>
+              </tr>
+            </tbody>
+            {{ form.as_p }}
+            <button class="btn btn-block bg-gradient-success" type="submit">Update Out Time</button>
+          </form>
+
+        </table>
+      </div>
+     
+        
+      
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}

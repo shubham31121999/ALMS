@@ -1,0 +1,347 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+<style>
+  #popup {
+    position: fixed;
+    bottom: 3%;
+    right: 3%;
+    border: 0.1% solid #4CAF50;
+    background-color: #4CAF50;
+    color: white;
+    padding: 1%;
+    z-index: 9999; /* Ensure the pop-up stays on top */
+    display: none; /* Hide the pop-up by default  */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Main container */
+.container {
+    max-width: 108%;
+    margin: 0 auto;
+    padding: 0%;
+    border: 0% solid #ccc;
+    /* border-radius: 0.5%; */
+}
+
+/* Card style */
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -0.5% solid #ccc;
+    border-radius: -0.5%;
+    margin-bottom: 1%;
+    margin-top: 0%;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -0.5%;
+    border-top-right-radius: -0.5%;
+    margin-bottom: 0%;
+}
+
+
+h2 {
+    text-align: center;
+    color: #fff;
+}
+</style>
+     
+        <!-- Content Header (Page header) -->
+        
+      
+
+
+<!-- Main content -->
+<section class="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card ">
+          <div class="card-header">
+            {% if messages %}
+              <div class="alert alert-dismissible fade show {% for message in messages %}alert-{{ message.tags }}{% endfor %}" role="alert">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endif %}
+            <h2 >Employee Information</h2>
+          </div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'emp_info' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <div class="form-group row">
+                <label for="emp_id" class="col-md-2 col-form-label">Employee ID:</label>
+                <div class="col-md-4">
+                  <input type="text" id="emp_id" name="emp_id" value="{{ employee.emp_id }}" readonly class="form-control">
+                </div>
+                <label for="email" class="col-md-2 col-form-label">Email:</label>
+                <div class="col-md-4">
+                  <input type="email" id="email" name="email" value="{{ employee.user.email }}" readonly class="form-control">
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="title" class="col-md-2 col-form-label">Title:</label>
+                <div class="col-md-4">
+                  <input type="text" id="title" name="title" value="{{ employee.title }}" readonly class="form-control">
+                </div>
+                <label for="first_name" class="col-md-2 col-form-label">First Name:</label>
+                <div class="col-md-4">
+                  <input type="text" id="first_name" name="first_name" value="{{ employee.user.first_name }}" readonly class="form-control">
+                </div>
+                <!-- <label for="middle_name" class="col-md-2 col-form-label">Middle Name:</label>
+                <div class="col-md-4">
+                  <input type="text" id="middle_name" name="middle_name" value="{{ employee.middle_name }}" readonly class="form-control">
+                </div>
+                <label for="last_name" class="col-md-2 col-form-label">Last Name:</label>
+                <div class="col-md-4">
+                  <input type="text" id="last_name" name="last_name" value="{{ employee.user.last_name }}" readonly class="form-control">
+                </div> -->
+              </div>
+              <div class="form-group row">
+                <label for="middle_name" class="col-md-2 col-form-label">Middle Name:</label>
+                <div class="col-md-4">
+                  <input type="text" id="middle_name" name="middle_name" value="{{ employee.middle_name }}" readonly class="form-control">
+                </div>
+                <label for="last_name" class="col-md-2 col-form-label">Last Name:</label>
+                <div class="col-md-4">
+                  <input type="text" id="last_name" name="last_name" value="{{ employee.user.last_name }}" readonly class="form-control">
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="mobile_no" class="col-md-2 col-form-label">Mobile No:</label>
+                <div class="col-md-4">
+                  <input type="text" id="mobile_no" name="mobile_no" value="{{ employee.mobile_no }}"  readonly class="form-control">
+                </div>
+                <label for="emg_mobile_no_1" class="col-md-2 col-form-label">Emg Mobile No 1:</label>
+                <div class="col-md-4">
+                  <input type="text" id="emg_mobile_no_1" name="emg_mobile_no_1" value="{{ employee.emg_mobile_no_1 }}" readonly class="form-control">
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="emg_mobile_no_2" class="col-md-2 col-form-label">Emg Mobile No 2:</label>
+                <div class="col-md-4">
+                  <input type="text" id="emg_mobile_no_2" name="emg_mobile_no_2" value="{{ employee.emg_mobile_no_2 }}" readonly class="form-control">
+                </div>
+                <label for="emg_relation_1" class="col-md-2 col-form-label">Emg Relation 1:</label>
+                <div class="col-md-4">
+                  <input type="text" id="emg_relation_1" name="emg_relation_1" value="{{ employee.emg_relation_1 }}" readonly class="form-control">
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="emg_relation_2" class="col-md-2 col-form-label">Emg Relation 2:</label>
+                <div class="col-md-4">
+                  <input type="text" id="emg_relation_2" name="emg_relation_2" value="{{ employee.emg_relation_2 }}" readonly class="form-control">
+                </div>
+                <label for="marital_status" class="col-md-2 col-form-label">Marital Status:</label>
+                <div class="col-md-4">
+                  <input type="text" id="marital_status" name="marital_status" value="{{ employee.marital_status }}" readonly class="form-control">
+                </div>
+                
+              </div>
+              <div class="form-group row">
+                <label for="pan_no" class="col-md-2 col-form-label">PAN No:</label>
+                <div class="col-md-4">
+                  <input type="text" id="pan_no" name="pan_no" value="{{ employee.pan_no }}" readonly class="form-control">
+                </div>
+                <label for="bank_account_no" class="col-md-2 col-form-label">Bank Account No:</label>
+                <div class="col-md-4">
+                  <input type="text" id="bank_account_no" name="bank_account_no" value="{{ employee.bank_account_no }}" readonly class="form-control">
+                </div>
+
+              </div>
+              
+              <div class="form-group row">
+                <label for="aadhaar" class="col-md-2 col-form-label">Aadhaar:</label>
+                <div class="col-md-4">
+                  <input type="text" id="aadhaar" name="aadhaar" value="{{ employee.aadhaar }}" readonly class="form-control">
+                </div>
+                <label for="designation" class="col-md-2 col-form-label">Designation:</label>
+                <div class="col-md-4">
+                  <input type="text" id="designation" name="designation" value="{{ employee.designation }}" readonly class="form-control">
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="address" class="col-md-2 col-form-label">Address:</label>
+                <div class="col-md-4">
+                  <textarea id="address" name="address" readonly class="form-control">{{ employee.address }}</textarea>
+                </div>
+                <label for="current_address" class="col-md-2 col-form-label">Current Address:</label>
+                <div class="col-md-4">
+                  <textarea id="current_address" name="current_address" readonly class="form-control">{{ employee.current_address }}</textarea>
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <label for="salary" class="col-md-2 col-form-label">Salary:</label>
+                <div class="col-md-4">
+                  <input type="text" id="salary" name="salary"  value="{{ employee.salary }}" readonly class="form-control">
+                </div>
+                <label for="salary" class="col-md-2 col-form-label">Annual CTC:</label>
+                <div class="col-md-4">
+                  <input type="text" id="salary" name="salary"  value="{{ employee.annual_ctc }}" readonly class="form-control">
+                </div>
+                
+                
+              </div>
+              <div class="form-group row">
+                <label for="nominee" class="col-md-2 col-form-label">Nominee:</label>
+                <div class="col-md-4">
+                    <input type="text" id="nominee" name="nominee" value="{{ employee.nominee }}" readonly class="form-control">
+                </div>
+                <label for="nominee_relation" class="col-md-2 col-form-label">Nominee Relation:</label>
+                <div class="col-md-4">
+                    <input type="text" id="nominee_relation" name="nominee_relation" value="{{ employee.nominee_relation }}" readonly class="form-control">
+                </div>
+              </div>
+              
+              
+              <div class="form-group row">
+                <label for="ifsc_code" class="col-md-2 col-form-label">IFSC Code:</label>
+                <div class="col-md-4">
+                  <input type="text" id="ifsc_code" name="ifsc_code" value="{{ employee.ifsc_code }}" readonly class="form-control">
+                 </div>
+                
+             <label for="blood_group" class="col-md-2 col-form-label">Blood Group:</label>
+
+             <div class="col-md-4">
+              <select id="blood_group" name="blood_group" class="form-control" readonly>
+                  {% for choice in employee.BLOOD_GROUP_CHOICES %}
+                      {% if choice.0 == employee.blood_group %}
+                          <option value="{{ choice.0 }}" selected>{{ choice.1 }}</option>
+                      {% endif %}
+                  {% endfor %}
+              </select>
+          </div>
+            </div>
+            
+
+            
+              
+              <!-- <div class="form-group row">
+                <label for="gender" class="col-md-2 col-form-label">Gender:</label>
+                <div class="col-md-4">
+                  <select id="gender" name="gender" class="form-control">
+                      {% for gender_choice in employee.GENDER_CHOICES %}
+                          <option value="{{ gender_choice.0 }}" {% if gender_choice.0 == employee.gender %}selected{% endif %}>{{ gender_choice.1 }}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+                <label for="date_of_birth" class="col-md-2 col-form-label">Date of Birth:</label>
+                <div class="col-md-4">
+                  <input type="date" id="date_of_birth" name="date_of_birth" value="{{ employee.date_of_birth|date:'Y-m-d' }}" class="form-control">
+                </div>
+              </div> -->
+              <div class="form-group row">
+                <label for="gender" class="col-md-2 col-form-label">Gender:</label>
+                <div class="col-md-4">
+                  <select id="gender" name="gender" class="form-control" readonly>
+                      {% for gender_choice in employee.GENDER_CHOICES %}
+                          {% if gender_choice.0 == employee.gender %}
+                              <option value="{{ gender_choice.0 }}" selected>{{ gender_choice.1 }}</option>
+                          {% endif %}
+                      {% endfor %}
+                  </select>
+                </div>
+                <label for="date_of_birth" class="col-md-2 col-form-label">Date of Birth:</label>
+                <div class="col-md-4">
+                    <input type="date" id="date_of_birth" name="date_of_birth" value="{{ employee.date_of_birth|date:'Y-m-d' }}" class="form-control" readonly>
+                </div>
+            </div>
+              
+              <div class="form-group row">
+                <label for="date_of_joining" class="col-md-2 col-form-label">Date of Joining:</label>
+                <div class="col-md-4">
+                  <input type="date" id="date_of_joining" name="date_of_joining" readonly value="{{ employee.date_of_joining|date:'Y-m-d' }}" class="form-control">
+                </div>
+                <label for="date_of_probation" class="col-md-2 col-form-label">Date of Confirmation:</label>
+                <div class="col-md-4">
+                  <input type="date" id="date_of_probation" name="date_of_probation" readonly value="{{ employee.date_of_probation|date:'Y-m-d' }}" class="form-control">
+                </div>
+              </div>
+            
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div id="popup" style="display: none;"></div>
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+  // Function to display the pop-up message
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get the form element
+    var form = document.querySelector("form");
+
+    // Add event listener for form submission
+    form.addEventListener("submit", function(event) {
+      // Prevent the default form submission
+      event.preventDefault();
+
+      // Submit the form using AJAX or fetch API
+      // Update the URL to the appropriate endpoint
+      fetch("{% url 'emp_info' %}", {
+        method: "POST",
+        body: new FormData(form)
+      })
+      .then(response => {
+        if (response.ok) {
+          // Form submitted successfully
+          // Display the pop-up message
+          showPopup("Employee information updated successfully.");
+
+          // Reset the form fields if needed
+          form.reset();
+        } else {
+          // Handle errors or display warning messages if needed
+          // Example: showPopup("Error: Unable to update employee information.");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        // Handle errors or display warning messages if needed
+        // Example: showPopup("Error: Unable to update employee information.");
+      });
+    });
+
+    // Function to display the pop-up message
+    function showPopup(message) {
+      // Get the pop-up element
+      var popup = document.getElementById("popup");
+
+      // Set the message content
+      popup.innerHTML = message;
+
+      // Display the pop-up
+      popup.style.display = "block";
+
+      // Close the pop-up after 3 seconds (3000 milliseconds)
+      setTimeout(function() {
+        popup.style.display = "none";
+      }, 3000);
+    }
+  });
+</script>
+{% endblock custom_js %}

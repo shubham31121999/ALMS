@@ -1,0 +1,98 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+     body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -5% solid #ccc;
+    border-radius: -5%;
+    margin-bottom: 1%;
+
+}
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -5%;
+    border-top-right-radius: -5%;
+    margin-bottom: 0.5%;
+}
+
+h2 {
+        text-align: center;
+        color: #fff;
+}
+
+        .card-body {
+            padding: 0; /* Remove padding to eliminate gap */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0; /* Remove margin to eliminate gap */
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .btn {
+        display: block;
+        width: 15%;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        padding: 0.5%;
+        border-radius: -5%;
+        cursor: pointer;
+        font-weight: bold;
+        text-align: center;
+        margin: 2% auto; /* Center the button horizontally */
+    }
+    .btn:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Holiday List</h2>
+    </div>
+    <div class="card-body">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for holiday in holidays %}
+                    <tr>
+                        <td>{{ holiday.date }}</td>
+                        <td>{{ holiday.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'add_holiday' %}" class="btn">Add New Holiday</a>
+    </div>
+</div>
+
+{% endblock main_content %}

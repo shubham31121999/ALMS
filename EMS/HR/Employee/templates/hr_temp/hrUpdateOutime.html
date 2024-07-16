@@ -1,0 +1,148 @@
+{% extends 'hr_temp/base.html' %}
+
+{% block main_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .card {
+            max-width: 95%;
+            margin: 0 auto;
+            border: -5% solid #ccc;
+            border-radius: -5%;
+            margin-bottom: 1%;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1%;
+            border-top-left-radius: -5%;
+            border-top-right-radius: -5%;
+            margin-bottom: 0.5%;
+        }
+        h2 {
+            text-align: center;
+            color: #fff;
+        }
+        .card-body {
+            padding: 0; /* Remove padding to eliminate gap */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0; /* Remove margin to eliminate gap */
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .btn {
+            display: block;
+            width: 55%;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            padding: 1%;
+            border-radius: -5%;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            margin: 2% auto; /* Center the button horizontally */
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        /* Adjustments for filter dropdown */
+        .form-group {
+            margin-bottom: 1rem;
+            margin-left: 1rem; /* Adjust left margin for better alignment */
+        }
+        #company-filter {
+            width: calc(100% - 2rem); /* Full width minus margin */
+            max-width: 300px; /* Max width to prevent overly wide dropdown */
+            margin-left: 1rem; /* Adjust left margin for better alignment */
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>Attendance Records Without Out Time</h2>
+        </div>
+        <form id="company-filter-form" method="get">
+            <div class="form-group">
+                <select name="company" id="company-filter" class="form-control">
+                    <option value="">All Companies</option>
+                    {% for company in companies %}
+                        <option value="{{ company.company_name }}"
+                            {% if selected_company == company.company_name %} selected {% endif %}
+                        >{{ company.company_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Date</th>
+                        <th>In Time</th>
+                        <th>Out Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                    <tr>
+                        <td>{{ record.employee.emp_id }}</td>
+                        <td>{{ record.employee.user.first_name }} {{ record.employee.user.last_name }}</td>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.intime }}</td>
+                        <td>
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="employee" value="{{ record.employee.id }}">
+                                <input type="hidden" name="date" value="{{ record.date }}">
+                                <input type="time" name="outtime" class="form-control">
+                                <button type="submit" class="btn btn-primary mt-2">Update Out Time</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // JavaScript to submit form on dropdown change
+    document.getElementById('company-filter').addEventListener('change', function() {
+        document.getElementById('company-filter-form').submit();
+    });
+</script>
+
+</html>
+{% endblock main_content %}

@@ -1,0 +1,114 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 97%;
+    height: 100%;
+    margin: 2% auto; /* 20px approximated to 2% */
+    background-color: #fff;
+    border-radius: -5%; /* 20px approximated to 2% */
+    box-shadow: 0 0.2% 0.5% rgba(0, 0, 0, 0.1); /* 2px and 5px approximated to 0.2% and 0.5% */
+    margin-top: 0%;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%; /* 10px approximated to 1% */
+    border-top-left-radius: -5%; /* 20px approximated to 2% */
+    border-top-right-radius: -5%; /* 20px approximated to 2% */
+    margin-bottom: 2%; /* 20px approximated to 2% */
+}
+
+h2 {
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    margin: 0 auto;
+    width: 30%;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.7%; /* 7px approximated to 0.7% */
+    font-size: 1.8%; /* 18px approximated to 1.8% */
+}
+
+tr {
+    text-align: center;
+}
+
+.table thead {
+    background-color: #89CFF0;
+}
+
+.table {
+    width: 90%;
+    margin-left: 6%; /* Adjusted to keep the same proportional alignment */
+}
+
+</style>
+  <section class="content">
+    <div class="container-fluid">
+      
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h2 >Leave Table</h2>
+
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  
+
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+              <table class="table table-bordered text-nowrap">
+                  <thead>
+                      <tr>
+                          <th>Leave Type</th>
+                          <th>Date</th>
+                          <th>Status</th>
+                          <th>Remark</th>
+                          <th>HR Remark</th>
+                          <th>Created At</th>
+                          <th>Updated At</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for request in leave_requests %}
+                      <tr>
+                          <td>{{ request.leave_type }}</td>
+                          <td>{{ request.date }}</td>
+                          <td>{{ request.status }}</td>
+                          <td>{{ request.leaveremark }}</td>
+                          <td>{{ request.hrleaveremark }}</td>
+                          <td>{{ request.created_at }}</td>
+                          <td>{{ request.updated_at }}</td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      
+
+     
+
+    
+    
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}

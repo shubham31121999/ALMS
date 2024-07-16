@@ -1,0 +1,156 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+
+<style>
+          .leave-balance-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.leave-balance-table th,
+.leave-balance-table td {
+    border: 1px solid #ddd;
+    /* padding: 0.8%; Converted to percentage */
+}
+
+.leave-balance-table th {
+    background-color: #89CFF0;
+    text-align: left;
+}
+
+.leave-balance-table ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.leave-balance-table ul li {
+    padding: 0.2% 0; /* Converted to percentage */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -5% solid #ccc;
+    border-radius: -5%;
+    margin-bottom: 1%;
+
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.5%; /* Converted to percentage */
+    border-top-left-radius: 1%; /* Adjusted to percentage */
+    border-top-right-radius: 1%; /* Adjusted to percentage */
+    margin-bottom: 1%; /* Adjusted to percentage */
+}
+
+h2 {
+    text-align: center;
+    color: #fff;
+}
+</style>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h2>Leave Balance</h2>
+        </div>
+        <div class="card-body">
+            <table class="table leave-balance-table table-borderless">
+                <thead>
+                    <tr>
+                        <th>Months</th>
+                        <th>Opening Balance</th> <!-- New Column -->
+                        <th>Leaves Taken</th>
+                        <th>Closing Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for month, data in leave_balance_data.items %}
+                        <tr>
+                            <td>{{ month }}</td>
+                            <td>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>CL</th>
+                                            <th>SL</th>
+                                            <th>PL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ data.opening_balance.CL }}</td>
+                                            <td>{{ data.opening_balance.SL }}</td>
+                                            <td>{{ data.opening_balance.PL }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>CL</th>
+                                            <th>SL</th>
+                                            <th>PL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ data.leaves_taken.CL }}</td>
+                                            <td>{{ data.leaves_taken.SL }}</td>
+                                            <td>{{ data.leaves_taken.PL }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>CL</th>
+                                            <th>SL</th>
+                                            <th>PL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ data.closing_balance.CL }}</td>
+                                            <td>{{ data.closing_balance.SL }}</td>
+                                            <td>{{ data.closing_balance.PL }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+
+            <div class="text-center mt-4">
+                <a href="{% url 'employee_leave_balance_csv' employee.emp_id %}" class="btn btn-primary">Download Excel</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+{% endblock main_content %}

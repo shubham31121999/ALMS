@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+  }
+  
+  .main-header .navbar-brand{
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 5rem;
+  }
+  /* .main-sidebar{
+    margin-top: 4.5rem;
+  } */
+  .main-sidebar .brand-link{
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .main-sidebar{
+    visibility: visible;
+  }
+  #navbarCollapse{
+    margin-right: 55rem;
+  }
+  
+  nav ul li a .nav-text{
+    padding-left: 7px;
+    text-align: center;
+  }
+  
+  
+  .container {
+    margin: 0px auto;
+    margin-right: 30px;
+    max-width: 1050px;
+    margin-top: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.employee-details {
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    flex: 1;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.col p {
+    margin: 5px 0;
+}
+h2 {
+    margin-bottom: 20px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.attendance-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: left;
+}
+
+.attendance-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.convert-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.convert-button.excel {
+    background-color: #218c74;
+    color: #fff;
+    margin-left: 25px;
+}
+
+.convert-button.pdf {
+    background-color: #f0932b;
+    color: #fff;
+}
+
+.convert-button:hover {
+    opacity: 0.8;
+}

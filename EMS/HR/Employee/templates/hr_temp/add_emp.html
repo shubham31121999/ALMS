@@ -1,0 +1,739 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+
+
+<style>
+    #popup {
+ position: fixed;
+ top: 10%;
+ left: 50%;
+ transform: translateX(-50%);
+ border: 0.1% solid #4CAF50;
+ background-color: #4CAF50;
+ color: white;
+ padding: 1%;
+ z-index: 9999; /* Ensure the pop-up stays on top */
+ display: none; /* Hide the pop-up by default */
+}
+
+/* CSS styles */
+.card {
+ max-width: 95%;
+ margin: 0 auto;
+ border: -5% solid #ccc;
+ border-radius: -5%;
+ margin-bottom: 1%;
+}
+.card-header {
+ background-color: #007bff;
+ color: #fff;
+ padding: 1%;
+ border-top-left-radius: -5%;
+ border-top-right-radius: -5%;
+ margin-bottom: 0%;
+}
+.form-group {
+ margin-bottom: 2%;
+ display: inline-block;
+ width: calc(50% - 1%);
+ vertical-align: top;
+ box-sizing: border-box;
+ margin-right: 2%;
+}
+
+label {
+ display: block;
+ margin-bottom: 0.5%;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+input[type="date"] {
+ width: 100%;
+ padding: 0.8%;
+ border: 0.1% solid #ccc;
+ /* border-radius: 0.4%; */
+ box-sizing: border-box;
+}
+
+input[type="file"]:hover {
+ border: none;
+}
+
+input:hover, textarea:hover, select:hover {
+ border: 0.1% solid dodgerblue;
+ box-shadow: none;
+}
+
+textarea {
+ width:95%;
+ padding: 0.8%;
+ border: 0.1% solid #ccc;
+ border-radius: 0.4%;
+ box-sizing: border-box;
+ height: 10%;
+ resize: none;
+}
+
+.user_fullname input[type='text'] {
+ width: 80%;
+}
+
+.upload_documents input[type='file'] {
+ width: 80%;
+}
+
+.table tbody tr td div {
+ width: 99%; /* Adjusted width for consistency */
+}
+
+.btn {
+ display: block;
+ width: 10%;
+ color: #fff;
+ background-color: #28a745;
+ border: none;
+ padding: 0.5%;
+ border-radius: 0.4%;
+ cursor: pointer;
+ font-weight: bold;
+ text-align: center;
+ margin: 2% auto; /* Center the button horizontally */
+}
+
+.btn:hover {
+ background-color: #218838;
+}
+
+@media (max-width: 768px) {
+ .form-group {
+     width: 100%;
+     float: none; /* Reset float for responsive layout */
+     margin-right: 0; /* Reset margin for responsive layout */
+ }
+}
+
+h2 {
+ text-align: center;
+ color: white;
+}
+
+#alert_message {
+ width: 80%;
+ font-size: 1%;
+ margin: 0 auto;
+ text-align: center;
+}
+
+.user_fullname input[type="text"] {
+ width: 105%;
+}
+
+.user_fullname #id_title {
+ width: 50%;
+}
+
+.user_fullname .first_name {
+ margin-left: -15%;
+}
+
+.user_fullname .last_name input[type="text"], 
+.nomiee_relation input[type="text"], 
+.unpaid_leave input[type="number"] {
+ width: 109%;
+}
+
+</style>
+
+<section class="content">
+ <div class=" card">
+     <div class="card-header">
+         <h2 > Employee Details</h2>
+     </div>
+     <div class="card-body">
+         <div class="alert alert-success alert-dismissible" id="alert_message">
+             <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> -->
+             <h5><i class="icon fa fa-success"></i> Please provide address </h5>
+         </div>
+         <form method="POST" action= "{urls 'add_emp' }" enctype="multipart/form-data">
+             {% csrf_token %}
+             <div class="table-responsive">
+                 <table class="table table-borderless" >
+                     <thead>
+                         <tr>
+                             <th style="width: 50%;"></th>
+                             <th></th>
+                         </tr>
+                     
+                    </thead>
+                     <tbody>
+                        <tr>
+
+                            <td>
+                                <div class="form-group">
+                                    <label for="company" class="field">Company</label>
+                                    {{ form.company }}
+                                </div>   
+                            </td>
+
+                             <td>
+                                 <div class="form-group">
+                                     <label for="reporting" class="field">Reporting </label>
+                                     {{form.reporting}}
+                                 </div>
+                             </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="title" class="field">Title</label>
+                                {{ form.title }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="first_name" class="field">First Name</label>
+                                {{form.first_name}}
+                                </div>
+
+                            </td>
+                        </tr>
+                        
+                            <td>
+                                <div class="form-group">
+                                <label for="middle_name" class="field">Middle Name</label>
+                                {{form.middle_name}}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="last_name" class="field last_name" >Last Name</label>
+                                {{form.last_name}}
+                                </div>
+                            </td>
+                         
+                        </tr>
+ 
+ 
+                        <tr>
+                            <td>
+                                <div class="form-group form-horizontal">
+                                <label for="emp_id" class="field" >Employee ID</label>
+                                {{form.emp_id}}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="designation" class="field">Designation</label>
+                                {{ form.designation }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="email" class="field">Official Email</label>
+                                {{form.email}}
+                                <span>{{form.email.error}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="id_email2" class="field">Personal Email</label>
+                                {{ form.email2 }}
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- </tr> -->
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="blood_group" class="field">Blood Group</label>
+                                {{ form.blood_group }}
+                                </div>
+                            </td>
+                        
+                            <td>
+                                <div class="form-group">
+                                <label for="gender" class="field">Gender</label>
+                                {{ form.gender }}
+                                </div>
+                            </td>
+                        
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="date_of_joining" class="field">Date of Joining</label>
+                                {{ form.date_of_joining }}
+                                </div>
+                          
+                
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="date_of_probation" class="field">Date of Probation</label>
+                                {{ form.date_of_probation }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="date_of_birth" class="field">Date of Birth</label>
+                                {{ form.date_of_birth }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="mobile_no" class="field">Mobile Number</label>
+                                {{ form.mobile_no }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="emg_mobile_no_1" class="field">Emergency Mobile Number 1</label>
+                                {{ form.emg_mobile_no_1 }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="emg_relation_1" class="field">Relation for Emergency Contact 1</label>
+                                {{ form.emg_relation_1 }}
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="emg_mobile_no_2" class="field">Emergency Mobile Number 2</label>
+                                {{ form.emg_mobile_no_2 }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="emg_relation_2" class="field">Relation for Emergency Contact 2</label>
+                                {{ form.emg_relation_2 }}
+                                </div>
+                            </td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="pan_no" class="field">PAN Number</label>
+                                {{ form.pan_no }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="aadhaar" class="field">Aadhaar Number</label>
+                                {{ form.aadhaar }}
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" class="upload_documents">
+                                <div class="row">
+                                <div class="col pancard">
+                                    <div class="form-group">
+                                        <label for="profile_picture" class="field">Pancard</label>
+                                        {{ form.profile_picture }}
+                                    </div>
+                                </div>
+                                <div class="col aadhaar_card ">
+                                    <div class="form-group">
+                                        <label for="profile_picture" class="field">Aadhar Card</label>
+                                        {{ form.profile_picture }}
+                                    </div>
+                                </div>
+                                <div class="col profile_picture">
+                                    
+                                    <div class="form-group">
+                                        <label for="profile_picture" class="field">Profile Picture</label>
+                                        {{ form.profile_picture }}
+                                    </div>
+
+                                </div>
+                            </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="address" class="field">Address</label>
+                                {{form.address}}
+                                </div>
+                                <div class="form-group checkbox-lg icheck-danger">
+                                <input class="form-check-input" type="checkbox" id="same_address" name="same_address"> 
+                                <label class="form-check-label" for="same_address"><strong>Same for current address</strong></label>
+                                </div>
+                           
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="current_address" class="field" >Current Address</label>
+                                {{form.current_address}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="nominee" class="field">Nominee </label>
+                                {{form.nominee}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="nominee_relation" class="field">Nominee Relation </label>
+                                {{form.nominee_relation}}
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="martial_status" class="field">Martial Status</label>
+                                {{ form.marital_status}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="id_anniversary_date" class="field">Anniversary Date</label>
+                                {{ form.anniversary_date }}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <label for="id_loanamount" class="field">Loan Amount</label>
+                                    {{ form.loanamount }}
+                                    <span>{{ form.loanamount.errors }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <label for="id_emi" class="field">EMI Choices</label>
+                                    {{ form.emi }}
+                                    <span>{{ form.emi.errors }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <label for="id_emi_per_month" class="field">EMI per Month</label>
+                                    {{ form.emi_per_month }}
+                                    <span>{{ form.emi_per_month.errors }}</span>
+                                </div>
+                            </td>
+                            <!-- Add other fields here as per your layout -->
+                        </tr>
+                        
+
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="salary" class="field">Salary </label>
+                                {{form.salary}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="annual_ctc" class="field">Annual CTC</label>
+                                {{form.annual_ctc}}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td > 
+                                <div class="form-group">
+                                <label for="id_bank" class="field">Bank</label>
+                                {{ form.bank }}
+                                </div>
+                            </td>
+                            <td>
+                                 <div class="form-group">
+                                 <label for="bank_account_no" class="field">Bank Account Number</label>
+                                 {{ form.bank_account_no }}
+                                </div>
+                            </td>
+                         
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="ifsc_code" class="field">IFSC Code</label>
+                                {{ form.ifsc_code }}
+                                </div>
+                                </td>
+
+                            <td>
+                                <div class="form-group">
+                                <label for="standard_basic" class="field">Standard Basic</label>
+                                {{ form.standard_basic }}
+                                </div>   
+                            </td>
+                         
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="standard_HRA" class="field">Standard HRA</label>
+                                {{ form.standard_HRA }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                <label for="standard_edu_allowance" class="field">Standard Edu Allowance</label>
+                                {{ form.standard_edu_allowance }}
+                                </div>   
+                            </td>
+                         
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                <label for="standard_statutory_bonus" class="field">Standard Statutory Bonus</label>
+                                {{ form.standard_statutory_bonus }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                 <label for="standard_conveyance_allowance" class="field">Standard Conveyance Allowance</label>
+                                 {{ form.standard_conveyance_allowance }}
+                                </div>   
+                            </td>
+                         
+
+                        </tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="standard_LTA" class="field">Standard LTA</label>
+                            {{ form.standard_LTA }}
+                        </div>
+                    </td>
+                        <td>
+                             <div class="form-group">
+                             <label for="other_allowance" class="field">Other Allowance</label>
+                             {{form.other_allowance}}
+                            </div>
+                        </td>
+                    </tr>                        
+                    <tr>
+                         <td colspan="2" class="leave_types">
+                             <div class="row">
+                                 <div class="col casual_leave">
+                                     <div class="form-group">
+                                         <label for="CL" class="field">Casual Leave</label>
+                                         {{ form.CL }}
+                                     </div>
+                                 </div>
+                                <div class="col sick_leave ">
+                                     <div class="form-group">
+                                         <label for="SL" class="field">Sick Leave</label>
+                                         {{ form.SL }}
+                                     </div>
+                                 </div>
+                                <div class="col privilege_leave">
+                                     
+                                     <div class="form-group">
+                                         <label for="PL" class="field">Privilege Leave</label>
+                                         {{ form.PL }}
+                                     </div>
+ 
+                                </div>
+ 
+                                <div class="col unpaid_leave">
+                                     
+                                     <div class="form-group">
+                                         <label for="UL" class="field">Unpaid Leave</label>
+                                         {{ form.UL }}
+                                     </div>
+                                 </div>
+                             </div>
+                         </td>
+                         
+                        </tr>
+ 
+                       <tr>
+                         <td>
+                             <div class="form-group">
+                                 <label for="password" class="field">Password</label>
+                                 {{ form.password }}
+                             </div>
+                         </td>
+                       </tr>
+ 
+                     </tbody>
+                 </table>
+             </div>
+             <button class="btn btn-block bg-gradient-success" type="submit">Submit</button>
+         </form>
+     </div>
+
+ </div>
+ <div id="popup" style="display: none;"></div>
+</section>
+
+{% endblock main_content %}
+{% block custom_js %}
+
+<script>
+
+
+        function toggleAnniversaryDate() {
+            var maritalStatus = document.getElementById("id_marital_status");
+            var anniversaryDate = document.getElementById("id_anniversary_date");
+            if (maritalStatus.value === "Married") {
+                anniversaryDate.parentElement.style.display = "block";
+                anniversaryDate.readOnly = false;
+            } else {
+                anniversaryDate.parentElement.style.display = "none";
+                anniversaryDate.readOnly = true;
+            }
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            var maritalStatus = document.getElementById("id_marital_status");
+            toggleAnniversaryDate();
+            maritalStatus.addEventListener("change", toggleAnniversaryDate);
+        });
+    let addressField = document.getElementById('{{form.address.id_for_label}}');
+        let currentAddressField = document.getElementById('{{form.current_address.id_for_label}}');
+        let sameAddressCheckbox = document.getElementById('same_address');
+        let alertMessage = document.getElementById('alert_message');
+        alert_message.style.display = 'none';
+
+     // Function to show the alert message
+     function showAlertMessage() {
+        alertMessage.style.display = 'block'; // Show the alert message
+        setTimeout(function() {
+            alertMessage.style.display = 'none'; // Hide the alert message after 3 seconds
+        }, 3000); // 3000 milliseconds = 3 seconds
+    }
+
+    document.getElementById('same_address').addEventListener('change', function(){
+      
+        if(addressField.value === ''){
+                sameAddressCheckbox.checked = false; 
+                showAlertMessage();
+
+        }
+        else{
+            if(sameAddressCheckbox.checked){
+            currentAddressField.value = addressField.value;
+            }
+            else{
+                currentAddressField.value = '';
+            }
+        }
+
+    });
+  // Function to display the pop-up message
+  document.addEventListener("DOMContentLoaded", function() {
+    var form = document.querySelector("form");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        fetch("{% url 'add_emp' %}", {
+            method: "POST",
+            body: new FormData(form)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Error occurred while adding employee.");
+            }
+        })
+        .then(data => {
+            if (data.success) {
+                showPopup("Employee added successfully.");
+                form.reset();
+            } else {
+                showPopup(data.message || "Unknown error occurred.", true);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error.message);
+            showPopup("Error: " + error.message, true);
+        });
+    });
+
+    function showPopup(message, isError = false) {
+        var popup = document.getElementById("popup");
+        popup.innerHTML = message;
+        popup.style.display = "block";
+        popup.style.backgroundColor = isError ? "red" : "green";
+        setTimeout(function() {
+            popup.style.display = "none";
+        }, 3000);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var form = document.querySelector("form");
+    var loanamountField = document.getElementById("id_loanamount");
+    var emiField = document.getElementById("id_emi");
+    var emiPerMonthField = document.getElementById("id_emi_per_month");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Fetch API call or form submission handling here
+
+        // Calculate EMI dynamically
+        calculateEMI();
+    });
+
+    function calculateEMI() {
+        var loanAmount = parseFloat(loanamountField.value);
+        var emiChoice = parseInt(emiField.value);
+
+        if (!isNaN(loanAmount) && !isNaN(emiChoice)) {
+            // Perform EMI calculation logic here
+            var monthlyInterestRate = 0.1 / 12; // Example: 10% annual interest rate
+            var numberOfMonths = emiChoice;
+
+            // Formula for EMI calculation
+            var emi = (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfMonths)) /
+                      (Math.pow(1 + monthlyInterestRate, numberOfMonths) - 1);
+
+            // Round off EMI to 2 decimal places
+            var emiRounded = Math.round(emi * 100) / 100;
+
+            // Set the calculated EMI value in the form field
+            emiPerMonthField.value = emiRounded.toFixed(2); // Ensure toFixed(2) for 2 decimal places
+        } else {
+            emiPerMonthField.value = ""; // Clear EMI field if inputs are invalid
+        }
+    }
+
+    // Event listeners to calculate EMI on change
+    loanamountField.addEventListener("input", calculateEMI);
+    emiField.addEventListener("change", calculateEMI);
+});
+
+</script>
+{% endblock custom_js %}

@@ -1,0 +1,14 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+  <section class="content">
+    <div class="container-fluid">
+        <h1>Approve Leave Request</h1>
+        <form method="POST" action="{% url 'approve_leave_request' pk=leave_request.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}

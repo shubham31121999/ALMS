@@ -1,0 +1,123 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+    .table {
+    width: 95%;
+    margin: 1% 2%;
+}
+
+.submit_button {
+    display: block;
+    margin: 2% auto;
+    width: 15%;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 8px;
+    font-size: 100%;
+}
+
+.input-group {
+    margin-right: 20%;
+}
+
+.card {
+    max-width: 95%;
+    height: 100%;
+    margin: 0% auto;
+    background-color: #fff;
+    border-radius: -5%;
+    box-shadow: 0 0.2% 0.5% rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -5%;
+    border-top-right-radius: -5%;
+    margin-bottom: 2%;
+}
+
+h3 {
+    text-align: center;
+    color: #fff;
+}
+
+.table .thead {
+    background-color: #89CFF0;
+}
+</style>
+  <section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3>Employee Attendance Master Data</h3>
+  
+                </div>
+    
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead">
+                            <tr>
+                                <th>Date/Day</th>
+                                <th>Time In</th>
+                                <th>Time Out</th>
+                                <th>Late Coming (hr:min)</th>
+                                <th>Early Going (hr:min)</th>
+                                <th>Remark</th>
+                                <th>Leave Type</th>
+                                <th>Leave Date</th>
+                                <th>Leave Status</th>
+                                <th>Leave Remark</th>
+                                <th>Leave Created At</th>
+                                <th>Leave Updated At</th>
+                                <th>Status(WFH/OD)</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for date, attendance, leave_request in matched_data %}
+                            <tr>
+                                <td>{{ date }}</td>
+                                <td>{{ attendance.str_intime }}</td>
+                                <td>{{ attendance.str_outtime }}</td>
+                                <td>{{ attendance.str_lateintime }}</td>
+                                <td>{{ attendance.str_earlygoingtime }}</td>
+                                <td>{{ attendance.remark }}</td>
+                                <td>{% if leave_request %}{{ leave_request.leave_type }}{% else %}-{% endif %}</td>
+                                <td>{% if leave_request %}{{ leave_request.date }}{% else %}-{% endif %}</td>
+                                <td>{% if leave_request %}{{ leave_request.status }}{% else %}-{% endif %}</td>
+                                <td>{% if leave_request %}{{ leave_request.leaveremark }}{% else %}-{% endif %}</td>
+                                <td>{% if leave_request %}{{ leave_request.created_at }}{% else %}-{% endif %}</td>
+                                <td>{% if leave_request %}{{ leave_request.updated_at }}{% else %}-{% endif %}</td>
+                                <td>{{attendance.wfhstatus}}</td>
+                            
+                              </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+                    <a class="btn btn-block bg-gradient-success submit_button" href="{% url 'download_employee_details' emp_id=employee.emp_id %}">Download Details as Excel</a>
+                    
+                </div>
+                
+                
+                
+                
+          
+    
+      
+    </div>
+  </section>
+
+<script>
+
+</script>
+
+  <!-- /.content -->
+{% endblock main_content %}

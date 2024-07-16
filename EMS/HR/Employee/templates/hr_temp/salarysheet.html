@@ -1,0 +1,275 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    padding: 2%;
+    box-sizing: border-box;
+}
+
+.card {
+    max-width: 95%;
+    margin: 2% auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 1%;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+}
+
+.card-header h2 {
+    text-align: center;
+    margin: 0;
+}
+
+.header {
+    text-align: center;
+    padding: 1%;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+.btn {
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    padding: 8px 16px; 
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    margin: 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+
+.btn-container {
+    text-align: center;
+    margin: 16px 0;
+}
+
+.btn-download {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-download:hover {
+    background-color: #218838;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2% 0;
+    border: 1px solid #ccc;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+button.btn {
+    flex-grow: 1;
+    margin: 4px;
+}
+
+select option:checked {
+  background-color: #e0e0e0;
+  font-weight: bold;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+select option {
+  background-color: #fff;
+  color: #333;
+}
+</style>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h2>Salary Slip Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="drop">
+                <form id="companyForm" method="get" action="{% url 'salarysheet' %}">
+                    <label for="company_name">Select Company:</label>
+                    
+                    <select name="company_name" id="company_name" onchange="submitCompanyForm()">
+                        <option value="">All Companies</option>
+                        {% for company in companies %}
+                            <option value="{{ company.company_name }}" {% if company.company_name == selected_company_name %}selected{% endif %}>
+                                {{ company.company_name }} ({{ company.get_company_logic_display }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            
+            <form method="post" action="{% url 'salarysheet' %}">
+                {% csrf_token %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Employee ID</th>
+                                <th rowspan="2">Employee Name</th>
+                                <th rowspan="2">Month</th>
+                                <th rowspan="2">Total Days</th>
+                                <th rowspan="2">Absent Days</th>
+                                <th rowspan="2">Paid Days</th>
+                                <th colspan="8">Standard</th>
+                                <th colspan="8">Actual</th>
+                                <th colspan="6">Deduction</th>
+                                <th rowspan="2">Gross</th>
+                                <th rowspan="2">Total Deduction</th>
+                                <th rowspan="2">Net Salary</th>
+                                <th rowspan="2">Action</th>
+                            </tr>
+                            <tr>
+                                <th>Basic</th>
+                                <th>HRA</th>
+                                <th>Education Allowance</th>
+                                <th>Statutory Bonus</th>
+                                <th>Conveyance Allowance</th>
+                                <th>Standard LTA</th>
+                                <th>Standard PF</th>
+                                <th>Other Allowance</th>
+                                <th>Basic</th>
+                                <th>HRA</th>
+                                <th>Education Allowance</th>
+                                <th>Statutory Bonus</th>
+                                <th>Conveyance Allowance</th>
+                                <th>ActualStandard LTA</th>
+                                <th>Actual PF</th>
+                                <th>Other Allowance</th>
+                                <th>Loan Advance</th>
+                                <th>LW Fund</th>
+                                <th>Professional Tax</th>
+                                <th>Labor Tax</th>
+                                <th>ESIC</th>
+                                <th>PT Deduction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detail in employee_salary_details %}
+                                {% for salary in detail.salaries %}
+                                    <tr>
+                                        {% if forloop.first %}
+                                            <td rowspan="{{ detail.salaries.count }}">{{ detail.employee.emp_id }}</td>
+                                            <td rowspan="{{ detail.salaries.count }}">{{ detail.employee.user.first_name }} {{ detail.employee.user.last_name }}</td>
+                                        {% endif %}
+                                        <td>
+                                            <input type="hidden" name="salary_{{ forloop.parentloop.counter0 }}_id" value="{{ salary.id }}">
+                                            <input type="hidden" name="employee_id" value="{{ detail.employee.id }}">
+                                            <input type="date" name="salary_{{ forloop.parentloop.counter0 }}_month" value="{{ salary.month|date:'Y-m-d' }}" readonly>
+                                        </td>
+                                        <td><input type="number" name="salary_{{ forloop.parentloop.counter0 }}_total_days" value="{{ salary.total_days }}" readonly></td>
+                                        <td><input type="number" name="salary_{{ forloop.parentloop.counter0 }}_absent_days" value="{{ salary.absent_days }}" readonly></td>
+                                        <td><input type="number" name="salary_{{ forloop.parentloop.counter0 }}_paid_days" value="{{ salary.paid_days }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_basic" value="{{ salary.standard_basic }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_HRA" value="{{ salary.standard_HRA }}" readonly ></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_edu_allowance" value="{{ salary.standard_edu_allowance }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_statutory_bonus" value="{{ salary.standard_statutory_bonus }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_conveyance_allowance" value="{{ salary.standard_conveyance_allowance }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_LTA" value="{{ salary.standard_LTA }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_pf" value="{{ salary.standard_pf }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_standard_other_allowance" value="{{ salary.standard_other_allowance }}" readonly></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_basic" value="{{ salary.actual_basic }}" ></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_HRA" value="{{ salary.actual_HRA }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_edu_allowance" value="{{ salary.actual_edu_allowance }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_statutory_bonus" value="{{ salary.actual_statutory_bonus }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_conveyance_allowance" value="{{ salary.actual_conveyance_allowance }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_standard_LTA" value="{{ salary.actual_standard_LTA }}" ></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_actual_pf" value="{{ salary.actual_pf }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_other_allowance" value="{{ salary.other_allowance }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_loan_advance" value="{{ salary.loan_advance }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_lw_fund" value="{{ salary.lw_fund }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_p_tax" value="{{ salary.p_tax }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_l_tax" value="{{ salary.l_tax }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_ESIC" value="{{ salary.ESIC }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_pt_deduction" value="{{ salary.pt_deduction }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_gross" value="{{ salary.gross }}"></td>
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_total_deduction" value="{{ salary.total_deduction }}"></td>                                        
+                                        <td><input type="number" step="0.01" name="salary_{{ forloop.parentloop.counter0 }}_net_salary" value="{{ salary.net_salary }}"></td>
+                                        {% if forloop.last %}
+                                            <td class="button-container">
+                                                <!-- <button class="btn" type="submit" name="action" value="update">Update</button> -->
+                                                <a class="btn" href="{% url 'pdf_generate' emp_id=detail.employee.emp_id %}" download="employee_salary_details.pdf">Download</a>
+                                                <a class="btn" href="{% url 'pdf_upload' emp_id=detail.employee.emp_id %}">Upload</a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+            <form method="get" action="{% url 'download_csv' %}">
+                <div class="btn-container">
+                    <button class="btn-download" type="submit">Download CSV</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    function submitCompanyForm() {
+        document.getElementById('companyForm').submit();
+    }
+</script>
+{% endblock main_content %}

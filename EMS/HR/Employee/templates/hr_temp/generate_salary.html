@@ -1,0 +1,150 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Salary Slip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .card {
+            max-width: 90%;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            text-align: center;
+        }
+        .card-header h2 {
+            font-size: 24px;
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="time"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>Generate Salary Slip</h2>
+        </div>
+        
+        <div class="card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row first_row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="employee_id">Employee</label>
+                            <select name="employee_id" id="employee_id" class="form-control"> 
+                                {% for employee in employees %}
+                                    <option value="{{ employee.emp_id }}">{{ employee.emp_id }} - {{ employee.user.first_name }} {{ employee.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="month">Month</label>
+                            <select name="month" id="month" class="form-control">
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="year">Year</label>
+                            <select name="year" id="year" class="form-control">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <button type="submit" id="generateSalarySlipBtn" class="btn btn-primary">Generate Salary Slip</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock main_content %}

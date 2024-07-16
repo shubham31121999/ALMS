@@ -1,0 +1,93 @@
+{% load static %}
+<style>
+    .img-circle {
+    width: 100px; /* Adjust the width as needed */
+    height: 100px; /* Adjust the height as needed */
+    border-radius: 50%; /* This makes the image circular */
+    object-fit: cover; /* This ensures the image covers the entire container */
+}
+</style>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="https://transfinite.one/" class="brand-link">
+        <img src="{% static 'dist/img/appolo.ico' %}" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">Apollo Group</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          {% if employee %}
+          <div class="image">
+              <img src="{{ employee.profile_picture.url }}" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+              <a href="#" class="d-block">{{ employee.user.first_name }}</a>
+          </div>
+          {% else %}
+          <div class="info">
+              <a href="#" class="d-block">No Employee Info</a>
+          </div>
+          {% endif %}
+        </div>
+        
+        <!-- <style>
+            .brand-textt {
+                font-size: 28px;
+                text-align: center;
+                padding-left: 35px;
+                color: rgb(189, 179, 179);
+            }
+        </style>
+        <span class="brand-textt font-weight-bold;">EMPLOYEE</span> -->
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="/emp_attend" class="nav-link">
+                        <i class="fa fa-calendar-plus"></i>
+                        <p>Add Attendance</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/emp_info" class="nav-link">
+                        <i class="fa fa-address-card"></i>
+                        <p>Employee Info</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/leavetable" class="nav-link">
+                        <i class="fa fa-table"></i>
+                        <p>Leave Table</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/emp_leave" class="nav-link">
+                        <i class="fa fa-umbrella-beach"></i>
+                        <p>Leave</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'salary_slip_overview' %}" class="nav-link">
+                        <i class="fa fa-newspaper"></i>
+                        <p>Salary Details</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'add_expenses' %}" class="nav-link">
+                        <i class="fa fa-newspaper"></i>
+                        <p>Travel Expenses</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'user_logout' %}" class="nav-link">
+                        <i class="fa fa-sign-out-alt"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

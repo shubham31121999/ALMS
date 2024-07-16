@@ -1,0 +1,71 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -5% solid #ccc;
+    border-radius: -5%;
+    margin-bottom: 1%;
+
+}
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -5%;
+    border-top-right-radius: -5%;
+    margin-bottom: 0%;
+}
+
+h2 {
+        text-align: center;
+        color: #fff;
+}
+
+.table thead {
+    background-color: #89CFF0;
+}
+</style>
+
+<div class="card  card-container">
+  <div class="card-header">
+      <h2>Leave Request List</h2>
+  </div>
+  <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Employee Name</th>
+                      <th>Employee ID</th>
+                      <th>Designation</th>
+                      <th>Date</th>
+                    </tr>
+                
+                  </thead>
+                  <tbody>
+                    {% for leave_request in leave_requests %}
+                    <tr>
+                      <td>{{ leave_request.employee.user.first_name }} {{ leave_request.employee.user.last_name }}</td>
+                      <td>{{ leave_request.employee.emp_id }}</td>
+                      <td>{{ leave_request.employee.designation }}</td>
+                      <td><a href="{% url 'leave_request_detail' pk=leave_request.pk %}">{{ leave_request.date }}</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+  </div>
+</div>
+
+
+  <!-- /.content -->
+{% endblock main_content %}

@@ -1,0 +1,313 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+   .container {
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 2%;
+    border: 0.1% solid #ccc;
+    border-radius: 0.5%;
+}
+
+/* Initial styling */
+.profile-user-img-container {
+    width: 10%;
+    height: auto;
+    overflow: hidden;
+}
+
+.profile-user-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Styles for the modal */
+.modal {
+    display: none; /* Hide the modal by default */
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9); /* Black background with transparency */
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 80%;
+    margin-top: 10%;
+}
+
+.modal-img {
+    width: 100%;
+    height: auto;
+}
+
+
+.action_btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Align items vertically */
+    width: 100%; /* Ensure buttons take up full width */
+}
+
+.action_btn .btn {
+    flex: 1; /* Allow buttons to grow equally */
+    margin: 0 5px; /* Add margin to the left and right */
+}
+
+</style>
+
+
+    <!-- Main content -->
+    <!-- Main content -->
+    <section class="container-fluid">
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-olive card-outline">
+                        <!-- card header -->
+                        <div class="card-header">
+                            <div class="text-center">
+                              <!-- profile image -->
+                              <div class="profile-user-img img-fluid img-rectangle" style="width: 150px; height: 150px; overflow: hidden;">
+                                <img src="{{ employee.profile_picture.url }}" alt="User profile picture" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div> <!-- text-center div end -->
+                            
+                            <h3 class="profile-username text-center">
+                              {% for user in users %}
+                                  {% if user.id == employees.user_id %}
+                                      {{ user.first_name }} {{ user.last_name }}
+                                  {% endif %}
+                              {% endfor %}</h3>
+                            <p class="text-muted text-center">{{ employees.designation }}</p>
+                        </div> <!-- div crd header end -->
+                        <div class="card-body box-profile">
+                          <div class="table-responsive">
+                            <table class="table table-borderless">
+                              <!-- first row -->
+                              <tr>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Employee ID</Strong>
+                                  <p class="text-muted">{{ employee.emp_id }}</p>
+                              </td>
+                                <td class="emp_detail text-center">                               
+                                    <Strong class="labels_emp">Official Email</Strong>
+                                    <p class="text-muted">{% for user in users %}
+                                                              {% if user.id == employee.user_id %}
+                                                                  {{ user.email }}
+                                                              {% endif %}
+                                                          {% endfor %}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Mobile Number</Strong>
+                                  <p class="text-muted"> 9876543210 </p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Date of Birth</Strong>
+                                  <p class="text-muted">{{ employee.date_of_birth }}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Blood Group </Strong>
+                                  <p class="text-muted">{{ employee.blood_group }}</p>
+                                </td>
+                              </tr> <!-- first row end -->
+                              <!-- second row -->
+                              <tr>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">PAN Number</Strong>
+                                  <p class="text-muted"> {{ employee.pan_no }} </p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                    <Strong class="labels_emp">Date of Joining</Strong>
+                                    <p class="text-muted">{{ employee.date_of_joining }}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Date of Confirmation</Strong>
+                                  <p class="text-muted">{{ employee.date_of_probation }}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Company Name</Strong>
+                                  <p class="text-muted"> {{ employee.company.company_name }} </p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Salary </Strong>
+                                  <p class="text-muted">{{ employee.salary }}</p>
+                              </td>
+                              </tr> <!-- second row end -->
+                              <!-- third  row -->
+                              <tr>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Bank Account No</Strong>
+                                  <p class="text-muted"> {{ employee.bank_account_no }}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">IFSC Code</Strong>
+                                  <p class="text-muted"> {{ employee.ifsc_code }} </p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Address</Strong>
+                                  <p class="text-muted"> {{ employee.address }} </p>
+                                </td>
+                                
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Designation</Strong>
+                                  <p class="text-muted"> {{ employee.designation }} </p>
+                                </td> 
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Anniversary Date</Strong>
+                                  <p class="text-muted"> {{ employee.anniversary_date }}</p>
+                                </td>
+                              </tr> 
+                              <tr>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Emergency Mobile Number 1 </Strong>
+                                  <p class="text-muted"> {{ employee.emg_mobile_no_1 }}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Relation Emergency Mobile 1</Strong>
+                                  <p class="text-muted"> {{ employee.emg_relation_1 }} </p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Emergency Mobile Number 2</Strong>
+                                  <p class="text-muted"> {{ employee.emg_mobile_no_2 }} </p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Relation Emergency Mobile 2</Strong>
+                                  <p class="text-muted"> {{ employee.emg_relation_2 }}</p>
+                                </td>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Bank</Strong>
+                                  <p class="text-muted"> {{ employee.bank }}</p>
+                                </td>
+
+
+                                <div>
+                                  <h3>Total Leaves of the Month: {{ leave_dates|length }}</h3>
+                                  <h3>Total Present Days of the Month: {{ present_dates|length }}</h3>
+                                  <h3>Total Month Days: {{ total_month_days }}</h3>
+                              </div>
+                              
+                                 
+                              </tr>
+                              <tr>
+                                <td class="emp_detail text-center">                               
+                                  <Strong class="labels_emp">Personal Email</Strong>
+                                  <p class="text-muted"> {{ employee.email2 }}</p>
+                                </td>
+
+                              </tr> <!-- third  row end -->
+                            </table>
+
+                            <button id="toggleAadharBtn" class="btn btn-primary mt-3">Show Aadhar Image</button>
+<!-- Button to toggle pancard image -->
+<button id="togglePancardBtn" class="btn btn-primary mt-3">Show Pancard Image</button>
+
+<!-- Aadhar image -->
+<div id="aadharImage" class="mt-3" style="display: none;">
+    <img id="aadharImg" src="{% if employee.aadhar_image %}{{ employee.aadhar_image.url }}{% else %}{{ STATIC_URL }}placeholder_image.jpg{% endif %}" alt="Aadhar Image">
+</div>
+
+<!-- Pancard image -->
+<div id="pancardImage" class="mt-3" style="display: none;">
+    <img id="pancardImg" src="{% if employee.pancard_image %}{{ employee.pancard_image.url }}{% else %}{{ STATIC_URL }}placeholder_image.jpg{% endif %}" alt="Pancard Image">
+</div>
+
+<script>
+    // JavaScript to handle button click events
+    document.getElementById('toggleAadharBtn').addEventListener('click', function() {
+        var aadharImageDiv = document.getElementById('aadharImage');
+        var aadharImg = document.getElementById('aadharImg');
+
+        if (aadharImg.src === '' || aadharImg.src === 'undefined' || aadharImg.src.includes('{{ STATIC_URL }}placeholder_image.jpg')) {
+            alert("Emloyee Aadhar Image not found!");
+        } else {
+            if (aadharImageDiv.style.display === 'none') {
+                aadharImageDiv.style.display = 'block';
+                document.getElementById('pancardImage').style.display = 'none';
+                this.textContent = 'Hide Aadhar Image';
+                document.getElementById('togglePancardBtn').textContent = 'Show Pancard Image';
+            } else {
+                aadharImageDiv.style.display = 'none';
+                this.textContent = 'Show Aadhar Image';
+            }
+        }
+    });
+
+    document.getElementById('togglePancardBtn').addEventListener('click', function() {
+        var pancardImageDiv = document.getElementById('pancardImage');
+        var pancardImg = document.getElementById('pancardImg');
+
+        if (pancardImg.src === '' || pancardImg.src === 'undefined' || pancardImg.src.includes('{{ STATIC_URL }}placeholder_image.jpg')) {
+            alert("Employee Pancard Image not found!");
+        } else {
+            if (pancardImageDiv.style.display === 'none') {
+                pancardImageDiv.style.display = 'block';
+                document.getElementById('aadharImage').style.display = 'none';
+                this.textContent = 'Hide Pancard Image';
+                document.getElementById('toggleAadharBtn').textContent = 'Show Aadhar Image';
+            } else {
+                pancardImageDiv.style.display = 'none';
+                this.textContent = 'Show Pancard Image';
+            }
+        }
+    });
+</script>
+
+</div>
+                         
+                         
+                         
+                          <hr/>
+                          <!-- Attendance table -->
+                          <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead" style="background-color:#007bff ; color: white;">
+                                    <tr>
+                                        <th>Date/Day</th>
+                                        <th>Time In</th>
+                                        <th>Time Out</th>
+                                        <th>Late Coming (hr:min)</th>
+                                        <th>Early Going (hr:min)</th>
+                                        <th>Late Going (hr:min)</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for attendance in attendances %}
+                                    <tr>
+                                        <td>{{ attendance.date }}</td>
+                                        <td>{{ attendance.str_intime }}</td>
+                                        <td>{{ attendance.str_outtime }}</td>
+                                        <td>{{ attendance.str_lateintime }}</td>
+                                        <td>{{ attendance.str_earlygoingtime }}</td>
+                                        <td>{{ attendance.str_lategointtime }}</td>
+                                        <td>{{ attendance.remark }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="action_btn">
+                          <a class="btn btn-block bg-gradient-warning"  href="{% url 'generate_pdf' employee.emp_id %}" download="employee_details.pdf">Complete Report</a>
+                          <!-- <a class="btn btn-block bg-gradient-success" href="{% url 'upload_salary_slip' %}" >Upload Salary Slip</a> -->
+                          <!-- <a class="btn btn-block bg-gradient-info" href="{% url 'view_salary_slips' employee.emp_id %}">View Salary Slips</a> -->
+                          <a class="btn btn-block bg-gradient-info" href="{% url 'small_report' employee.emp_id %}" download="employee_details.pdf">Summary Report</a>
+                          <a class="btn btn-block bg-gradient-info" href="{%url 'employee_update' employee.emp_id %}" >Update Employee</a>
+                        </div>
+ 
+                      </div> <!-- card body end -->
+                        </div> <!-- card  end -->
+                    </div> <!-- card end -->
+                </div><!-- col-md-12 end -->
+            </div> <!-- row end -->
+        </div> <!-- container fluid -->
+    </section> <!-- section end -->      
+</div> <!--div wrapper end -->
+</section>
+{% endblock main_content %}

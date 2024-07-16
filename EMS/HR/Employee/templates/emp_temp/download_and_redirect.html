@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download and Redirect</title>
+    <script type="text/javascript">
+        window.onload = function() {
+            // Trigger the download
+            window.location.href = "{{ pdf_url }}";
+
+            // Redirect after a short delay to ensure the download starts
+            setTimeout(function() {
+                window.location.href = "{% url 'emp_dashboard' %}";
+            }, 2000);  // Adjust the delay as needed
+        };
+    </script>
+</head>
+<body>
+    <p>Your download will start shortly. You will be redirected to the dashboard.</p>
+</body>
+</html>

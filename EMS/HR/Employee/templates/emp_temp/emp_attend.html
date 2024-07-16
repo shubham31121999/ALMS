@@ -1,0 +1,106 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: -0.5% solid #ccc;
+    border-radius: -0.5%;
+    margin-bottom: 1%;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -0.5%;
+    border-top-right-radius: -0.5%;
+    margin-bottom: 0%;
+}
+
+h2 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 2%;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 0.8%;
+    border: 0.1% solid #ccc;
+    /* border-radius: 0.4%; */
+    box-sizing: border-box;
+}
+
+select {
+    height: 3.6%;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.8%;
+    border: 0.1% solid #ccc;
+    border-radius: 0.4%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.btn {
+    display: block;
+    width: 10%;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    padding: 0.5%;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    margin: 2% auto; /* Center the button horizontally */
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+</style>
+
+<div class="card card-container">
+    <div class="card-header">
+        <h2>Employee Attendance Form</h2>
+    </div>
+    <div class = "card-body">
+        {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+        {% if request.user.employee.company.company_logic == 'logic1' %}
+                    <p>Note: Your company does not allow attendance recording on weekends (Saturday and Sunday).</p>
+        {% endif %}
+    <form action="{% url 'emp_attend' %}" method="POST"  id="attendance-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"  class="btn btn-block bg-gradient-success">Submit</button>
+    </form>
+</div>
+</div>
+
+{% endblock main_content %}

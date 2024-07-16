@@ -1,0 +1,230 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+<style>
+ body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: 0.5% solid #ccc;
+    border-radius: 1%;
+    margin-bottom: 1%;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: 1%;
+    border-top-right-radius: 1%;
+    margin-bottom: 0%;
+}
+
+h2 {
+    text-align: center;
+    color: #fff;
+}
+
+.form-group {
+    margin-bottom: 2%;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 0.8%;
+    border: 0.1% solid #ccc;
+    /* border-radius: 0.4%; */
+    box-sizing: border-box;
+}
+
+select {
+    height: 3.6%;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.8%;
+    border: 0.1% solid #ccc;
+    border-radius: 0.4%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.btn {
+    display: block;
+    width: 10%;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    padding: 0.5%;
+    /* border-radius: 0.4%; */
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    margin: 2% auto; /* Center the button horizontally */
+}
+.btn:hover {
+    background-color: #218838;
+}
+
+</style>
+
+ <div class="card card-container">
+  <div class="card-header">
+    <h2 class="text-center">Leave Form</h2>
+  </div>
+  <div class="card-body">
+    <form action="{% url 'emp_leave' %}" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-block bg-gradient-success">Submit</button>
+      {% if messages %}
+      <div class="alert alert-success" role="alert">
+          {% for message in messages %}
+              {{ message }}
+          {% endfor %}
+      </div>
+  {% endif %}
+    </form>
+  </div>
+</div>
+ 
+{% endblock main_content %}
+{% block custom_js %}
+{% comment %} <script>
+  document.getElementById('id_leave_type').addEventListener('change', function() {
+    var leaveType = this.value;
+    if (leaveType) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          if (xhr.status == 200) {
+            var previousLeaveDates = JSON.parse(xhr.responseText);
+            var previousLeaveDatesHtml = "<div class='card'><div class='card-header'><h2 class='text-center'>Previous Leave Dates</h2></div><div class='card-body'><ul>";
+            for (var i = 0; i < previousLeaveDates.length; i++) {
+              previousLeaveDatesHtml += "<li>" + previousLeaveDates[i] + "</li>";
+            }
+            previousLeaveDatesHtml += "</ul></div></div>";
+            document.getElementById('id_leave_type').insertAdjacentHTML('afterend', previousLeaveDatesHtml);
+          } else {
+            console.error('Request failed:', xhr.status);
+          }
+        }
+      };
+      xhr.open("GET", "/get-previous-leave-dates/?leave_type=" + leaveType, true);
+      xhr.send();
+    } else {
+      var previousLeaveDatesCard = document.querySelector('.previous-leave-dates-card');
+      if (previousLeaveDatesCard) {
+        previousLeaveDatesCard.remove();
+      }
+    }
+  });
+</script> {% endcomment %}
+{% comment %} <script>
+  // Function to fetch and display previous leave dates
+  function displayPreviousLeaveDates(leaveType) {
+    fetch(`/get-previous-leave-dates/?leave_type=${leaveType}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(previousLeaveDates => {
+        const previousLeaveDatesHtml = `
+          <div class='card'>
+            <div class='card-header'>
+              <h2 class='text-center'>Previous Leave Dates</h2>
+            </div>
+            <div class='card-body'>
+              <ul>
+                ${previousLeaveDates.map(date => `<li>${date}</li>`).join('')}
+              </ul>
+            </div>
+          </div>`;
+        document.getElementById('id_leave_type').insertAdjacentHTML('afterend', previousLeaveDatesHtml);
+      })
+      .catch(error => {
+        console.error('Error fetching previous leave dates:', error);
+      });
+  }
+
+  // Event listener for leave type dropdown change
+  document.getElementById('id_leave_type').addEventListener('change', function() {
+    const leaveType = this.value;
+    if (leaveType) {
+      displayPreviousLeaveDates(leaveType);
+    } else {
+      const previousLeaveDatesCard = document.querySelector('.previous-leave-dates-card');
+      if (previousLeaveDatesCard) {
+        previousLeaveDatesCard.remove();
+      }
+    }
+  });
+</script> {% endcomment %}
+
+<script>
+  // Function to fetch and display previous leave dates
+  function displayPreviousLeaveDates(leaveType) {
+    fetch(`/get-previous-leave-dates/?leave_type=${leaveType}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(previousLeaveDates => {
+        // Remove old card
+        const previousLeaveDatesCard = document.querySelector('.previous-leave-dates-card');
+        if (previousLeaveDatesCard) {
+          previousLeaveDatesCard.remove();
+        }
+
+        // Create new card
+        const previousLeaveDatesHtml = `
+          <div class='card previous-leave-dates-card'>
+            <div class='card-header'>
+              <h2 class='text-center'>Previous Leave Dates for ${leaveType}</h2>
+            </div>
+            <div class='card-body'>
+              <ul>
+                ${previousLeaveDates.map(date => `<li>${date}</li>`).join('')}
+              </ul>
+            </div>
+          </div>`;
+        document.getElementById('id_leave_type').insertAdjacentHTML('afterend', previousLeaveDatesHtml);
+      })
+      .catch(error => {
+        console.error('Error fetching previous leave dates:', error);
+      });
+  }
+
+  // Event listener for leave type dropdown change
+  document.getElementById('id_leave_type').addEventListener('change', function() {
+    const leaveType = this.value;
+    if (leaveType) {
+      displayPreviousLeaveDates(leaveType);
+    } else {
+      const previousLeaveDatesCard = document.querySelector('.previous-leave-dates-card');
+      if (previousLeaveDatesCard) {
+        previousLeaveDatesCard.remove();
+      }
+    }
+  });
+</script>
+{% endblock custom_js %}
+

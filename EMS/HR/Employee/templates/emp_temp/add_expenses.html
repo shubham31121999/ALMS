@@ -1,0 +1,354 @@
+{% extends 'emp_temp/emp_base.html' %}
+{% block main_content %}
+
+<title>Add Expenses</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    /* Your custom styles here */
+    /* Your custom styles here */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    max-width: 95%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    margin-bottom: 1%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.card-body {
+    padding: 2%;
+}
+
+.expense-row {
+    border: 1px solid #ccc;
+    margin-bottom: 1.5%;
+    padding: 1.5%;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.form-row {
+    margin-bottom: 1.5%;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="file"],
+select {
+    width: 100%;
+    padding: 10px; /* Increase padding for better touch targets */
+    margin-top: 8px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.remove-row {
+    cursor: pointer;
+    color: #dc3545; /* Use red for remove actions */
+    font-weight: bold;
+    margin-top: 65%;
+    padding: 10px 20px; /* Increase padding for larger size */
+    border: none;
+    background-color: transparent;
+    transition: transform 0.2s ease-in-out; /* Add transition for smooth scaling */
+}
+
+.remove-row:hover {
+    color: #c82333; /* Darker red on hover */
+    transform: scale(1.5); /* Scale up by 10% on hover */
+}
+
+
+#add-expense-btn,
+#submit-button {
+    background-color: #007bff;
+    color: #fff;
+    width: 15%; /* Make buttons full width for mobile friendliness */
+    padding: 10px; /* Increase padding for better touch targets */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-expense-btn:hover,
+#submit-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.total-amount {
+    font-weight: bold;
+    text-align: right;
+    margin-top: 1.5%;
+}
+
+</style>
+
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h2>Add Expenses</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Hidden field for employee ID -->
+                <input type="hidden" name="employee_id" value="{{ request.user.id }}">
+                
+                <div id="expense-container">
+                    <!-- Initial expense fields -->
+                    <div class="expense-row">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="sr_no">Serial Number:</label>
+                                <input type="text" name="sr_no[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="from_place">From Place:</label>
+                                <input type="text" name="from_place[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="from_date">From Date:</label>
+                                <input type="date" name="from_date[]" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="to_place">To Place:</label>
+                                <input type="text" name="to_place[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="to_date">To Date:</label>
+                                <input type="date" name="to_date[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="purpose">Purpose:</label>
+                                <input type="text" name="purpose[]" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="distance">Distance:</label>
+                                <input type="number" name="distance[]" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="model_of_travel">Model of Travel:</label>
+                                <select name="model_of_travel[]" class="form-control" required>
+                                    <option value="">Select Model of Travel</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Bus">Bus</option>
+                                    <option value="Train">Train</option>
+                                    <option value="Flight">Flight</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="food_price">Food Price:</label>
+                                <input type="number" name="food_price[]" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="transport_fare">Transport Fare:</label>
+                                <input type="number" name="transport_fare[]" class="form-control" step="0.01"  required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="accommodation">Accommodation:</label>
+                                <input type="number" name="accommodation[]" class="form-control" step="0.01"  required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="other">Other Expenses:</label>
+                                <input type="number" name="other[]" class="form-control" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label for="miscellaneous">Miscellaneous:</label>
+                                <input type="number" name="miscellaneous[]" class="form-control" step="0.01"  required>
+                            </div>
+                            <div>
+                                <button type="button" class="btn remove-row">
+                                    <i class="fas fa-trash-alt"></i> <!-- Font Awesome trash icon -->
+                                  </button>
+                                  
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+
+                <!-- Button to add another expense row -->
+                <div class="row mt-3">
+                    <div class="col-md-12 text-center">
+                        <button type="button" class="btn btn-primary" id="add-expense-btn">Add Expense</button>
+                    </div>
+                </div>
+
+                <!-- File upload for receipt images -->
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label for="receipt_images">Receipt Images:</label>
+                        <input type="file" id="receipt_images" name="receipt_images[]" class="form-control-file" multiple>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="row mt-3">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-success">Submit Expenses</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+    
+    <!-- Bootstrap JS and jQuery (for dynamic row addition) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addExpenseButton = document.getElementById('add-expense-btn');
+            const expenseContainer = document.getElementById('expense-container');
+    
+            // Function to update serial numbers
+            function updateSerialNumbers() {
+                const expenseRows = document.getElementsByClassName('expense-row');
+                Array.from(expenseRows).forEach((row, index) => {
+                    const serialNumberField = row.querySelector('input[name="sr_no[]"]');
+                    if (serialNumberField) {
+                        serialNumberField.value = index + 1; // Update serial number sequentially
+                    }
+                });
+            }
+    
+            // Event listener for adding an expense row
+            addExpenseButton.addEventListener('click', function() {
+                const newExpenseRow = document.createElement('div');
+                newExpenseRow.className = 'expense-row';
+    
+                newExpenseRow.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="sr_no">Serial Number:</label>
+                            <input type="text" name="sr_no[]" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="from_place">From Place:</label>
+                            <input type="text" name="from_place[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="from_date">From Date:</label>
+                            <input type="date" name="from_date[]" class="form-control" required>
+                        </div>
+                    </div>
+    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="to_place">To Place:</label>
+                            <input type="text" name="to_place[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="to_date">To Date:</label>
+                            <input type="date" name="to_date[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="purpose">Purpose:</label>
+                            <input type="text" name="purpose[]" class="form-control" required>
+                        </div>
+                    </div>
+    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="distance">Distance:</label>
+                            <input type="number" name="distance[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="model_of_travel">Model of Travel:</label>
+                            <select name="model_of_travel[]" class="form-control" required>
+                                <option value="">Select Model of Travel</option>
+                                <option value="Car">Car</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Train">Train</option>
+                                <option value="Flight">Flight</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="food_price">Food Price:</label>
+                            <input type="number" name="food_price[]" class="form-control" required>
+                        </div>
+                    </div>
+    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="transport_fare">Transport Fare:</label>
+                            <input type="number" name="transport_fare[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="accommodation">Accommodation:</label>
+                            <input type="number" name="accommodation[]" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="other">Other Expenses:</label>
+                            <input type="number" name="other[]" class="form-control" required>
+                        </div>
+                    </div>
+    
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="miscellaneous">Miscellaneous:</label>
+                            <input type="number" name="miscellaneous[]" class="form-control" required>
+                        </div>
+                        <div>
+                            <button type="button" class="btn remove-row">
+                                <i class="fas fa-trash-alt"></i> <!-- Font Awesome trash icon -->
+                            </button>        
+                        </div>
+                    </div>
+                `;
+    
+                expenseContainer.appendChild(newExpenseRow);
+                updateSerialNumbers(); // Update serial numbers after adding
+            });
+    
+            // Event delegation for remove-row button
+            $(document).on('click', '.remove-row', function() {
+                $(this).closest('.expense-row').remove();
+                updateSerialNumbers(); // Update serial numbers after removal
+            });
+    
+            // Initial serial number update
+            updateSerialNumbers();
+        });
+    </script>
+    
+
+    
+
+
+{% endblock main_content %}

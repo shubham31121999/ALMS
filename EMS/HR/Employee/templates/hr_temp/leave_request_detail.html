@@ -1,0 +1,121 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.card {
+    max-width: 95%;
+    height: 100%;
+    margin: 2% auto;
+    background-color: #fff;
+    border-radius: -5%;
+    box-shadow: 0 0.2% 0.5% rgba(0,0,0,0.1);
+}
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1%;
+    border-top-left-radius: -5%;
+    border-top-right-radius: -5%;
+    margin-bottom: 2%;
+}
+h2 {
+    text-align: center;
+    color: #fff;
+}
+.btn {
+ display: block;
+ width: 20%;
+ color: #fff;
+ background-color: #28a745;
+ border: none;
+ padding: 0.5%;
+ border-radius: -5%;
+ cursor: pointer;
+ font-weight: bold;
+ text-align: center;
+ margin: 2% auto; /* Center the button horizontally */
+}
+
+.btn:hover {
+ background-color: #218838;
+}
+
+#id_status {
+    width: 70%;
+    padding: 1%;
+    border-radius: 0.5%;
+    border: 0.1% solid #ccc;
+    box-sizing: border-box;
+}
+.row {
+    margin: 1% 20%;
+    justify-content: center;
+}
+.table thead {
+    background-color: #89CFF0;
+}
+
+</style>
+<section class="content">
+    <div class="card">
+        <div class="card-header">
+            <h2>Leave Request Detail</h2>
+        </div>
+        <div class="card-body">
+            {% if success_message %}
+                <div class="alert alert-success" role="alert">
+                    {{ success_message }}
+                </div>
+            {% endif %}
+
+            {% if rejected_message %}
+                <div class="alert alert-danger" role="alert">
+                    {{ rejected_message }}
+                </div>
+            {% endif %}
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Leave Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ leave_request.employee.user.first_name }}</td>
+                        <td>{{ leave_request.date }}</td>
+                        <td>{{ leave_request.get_leave_type_display }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-container card">
+        <div class="card-header">
+            <h2>Approve Leave Request</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <form method="post" action="{% url 'approve_leave_request' pk=leave_request.pk %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class="btn btn-block bg-gradient-success" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
