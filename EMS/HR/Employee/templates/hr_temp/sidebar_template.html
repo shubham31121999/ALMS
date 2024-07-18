@@ -36,7 +36,16 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-        
+               <li class="nav-item">
+                <a href="/add_employee" class="nav-link">
+                  <i class="nav-icon fa fa-solid fa-user-plus"></i>
+                  
+                  <p>
+                    Employee Joining
+                    
+                  </p>
+                </a>
+              </li>
           
                <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -86,7 +95,7 @@
             <ul class="nav nav-treeview">
              
                 <li class="nav-item">
-                    <a href="/add_company" class="nav-link">
+                    <a href="{% url 'add_company' %}" class="nav-link">
                         <i class="nav-icon fa fa-building"></i>
                         <p>Add Company</p>
                     </a>
@@ -174,6 +183,17 @@
               <p>
                 
                IntimeO
+               
+              </p>
+            </a>
+           </li>
+
+           <li class="nav-item">
+            <a href="{% url 'addUserCompany' %}" class="nav-link">
+              <i class="nav-icon fa fa-edit"></i>
+              <p>
+                
+               UserCompany
                
               </p>
             </a>

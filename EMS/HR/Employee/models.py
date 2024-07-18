@@ -23,6 +23,41 @@ class Holiday(models.Model):
         return f"{self.date}: {self.description}"
     
 
+class EmployeeJoining(models.Model):
+    emp_id = models.CharField(max_length=20, unique=True)
+    first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    contact_number = models.CharField(max_length=15)
+    whatsapp_number = models.CharField(max_length=15, blank=True, null=True)
+    age = models.PositiveIntegerField()
+    gender = models.CharField(max_length=10)
+    current_address = models.TextField()
+    permanent_address = models.TextField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pincode = models.CharField(max_length=10)
+    security_guard_training = models.CharField(max_length=3, choices=[('yes', 'Yes'), ('no', 'No')], default='no')
+    job_experience = models.CharField(max_length=3, choices=[('yes', 'Yes'), ('no', 'No')], default='no')
+    profile_picture = models.ImageField(upload_to='profile_pictures/')
+    signature = models.ImageField(upload_to='signatures/')
+    preferred_work_arrangements = models.CharField(max_length=20)
+    position = models.CharField(max_length=50)
+    account_holder_name = models.CharField(max_length=100)
+    bank_name = models.CharField(max_length=100)
+    bank_account_number = models.CharField(max_length=30)
+    ifsc_code = models.CharField(max_length=15)
+    branch_name = models.CharField(max_length=100)
+    bank_address = models.TextField()
+    qualification = models.CharField(max_length=20)
+    experience = models.CharField(max_length=20)
+    
+    def __str__(self):
+        return self.emp_id
+
+    
+
 
 
 
@@ -594,4 +629,22 @@ class Attendance(models.Model):
         
 
 
+
+class userCompany(models.Model):
+    comId = models.CharField(max_length=50)
+    comName = models.CharField(max_length=50)
+    comGST = models.CharField(max_length=50)
+    comCIN = models.CharField(max_length=50)
+    comCont = models.IntegerField()
+    comEmail = models.CharField(max_length=50)
+    comDLNum1 = models.CharField(max_length=50)
+    comDLNum2 = models.CharField(max_length=50)
+    comPanNum = models.CharField(max_length=50)
+    comAdd = models.CharField(max_length=50)
+    comCity = models.TextField(max_length=50)
+    comState = models.TextField(max_length=50)
+    comPin = models.IntegerField(max_length=50)
+    
+    def __str__(self):
+        return f"{self.comName} {self.comCity} ({self.comId})"
 

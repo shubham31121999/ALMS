@@ -80,6 +80,8 @@ urlpatterns = [
     path('pdf_upload/<str:emp_id>/', views.pdf_upload, name='pdf_upload'),
     path('hrUpdateOutime/', views.hrUpdateOutime, name='hrUpdateOutime'),
     path('updateattend',views.updateattend,name='updateattend'),
+    path('add_employee/', views.add_employee, name='add_employee'),
+    path('addUserCompany/', views.addUserCompany, name='addUserCompany'),
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

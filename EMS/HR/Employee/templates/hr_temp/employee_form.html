@@ -1,0 +1,312 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+ max-width: 95%;
+ margin: 0 auto;
+ border: -5% solid #ccc;
+ border-radius: -5%;
+ margin-bottom: 1%;
+}
+.card-header {
+ background-color: #007bff;
+ color: #fff;
+ padding: 1%;
+ border-top-left-radius: -5%;
+ border-top-right-radius: -5%;
+ margin-bottom: 1%;
+}
+.card-header h2 {
+    margin: 0;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5%;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.form-group {
+    width: 30%;  /* Adjusted for three columns */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="file"],
+textarea,
+select {
+    width: 100%;
+    padding: 2%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+input[type="checkbox"] {
+    margin-right: 1%;
+}
+
+.submit-button {
+    width: 10%;
+    padding: 1%;
+    background-color: #007BFF;
+    border: none;
+    margin-left: 45%;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2%;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.section-title {
+    margin-bottom: 1%;
+    font-size: 1.8%;
+    color: #444;
+}
+</style>
+
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>Employee Joining Form</h2>
+        </div>
+        <form action="{% url 'add_employee' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="emp_id">Employee ID:</label>
+                    <input type="text" name="emp_id" id="emp_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" name="first_name" id="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="middle_name">Middle Name:</label>
+                    <input type="text" name="middle_name" id="middle_name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" name="last_name" id="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact_number">Contact Number:</label>
+                    <input type="text" name="contact_number" id="contact_number" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="whatsapp_number">WhatsApp Number:</label>
+                    <input type="text" name="whatsapp_number" id="whatsapp_number">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" name="age" id="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select name="gender" id="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="current_address">Current Address:</label>
+                    <textarea name="current_address" id="current_address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="permanent_address">Permanent Address:</label>
+                    <textarea name="permanent_address" id="permanent_address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" name="city" id="city" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <select name="state" id="state" required>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Puducherry">Puducherry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pincode">Pincode:</label>
+                    <input type="text" name="pincode" id="pincode" required>
+                </div>
+                <div class="form-group">
+                    <label>Have you taken any security guard training course before?</label>
+                    <label><input type="checkbox" name="security_guard_training" value="yes"> Yes</label>
+                    <label><input type="checkbox" name="security_guard_training" value="no"> No</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Do you have any job/internship/experience as a security guard?</label>
+                    <label><input type="checkbox" name="job_experience" value="yes"> Yes</label>
+                    <label><input type="checkbox" name="job_experience" value="no"> No</label>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Work Arrangements:</label>
+                    <label><input type="checkbox" name="preferred_work_arrangements" value="full_time"> Full Time</label>
+                    <label><input type="checkbox" name="preferred_work_arrangements" value="weekends"> Weekends</label>
+                    <label><input type="checkbox" name="preferred_work_arrangements" value="part_time"> Part Time</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="position">Position:</label>
+                    <input type="text" name="position" id="position" required>
+                </div>
+                <div class="form-group">
+                    <label for="account_holder_name">Account Holder Name:</label>
+                    <input type="text" name="account_holder_name" id="account_holder_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="bank_name">Bank Name:</label>
+                    <input type="text" name="bank_name" id="bank_name" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bank_account_number">Bank Account Number:</label>
+                    <input type="text" name="bank_account_number" id="bank_account_number" required>
+                </div>
+                <div class="form-group">
+                    <label for="ifsc_code">IFSC Code:</label>
+                    <input type="text" name="ifsc_code" id="ifsc_code" required>
+                </div>
+                <div class="form-group">
+                    <label for="branch_name">Branch Name:</label>
+                    <input type="text" name="branch_name" id="branch_name" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bank_address">Bank Address:</label>
+                    <textarea name="bank_address" id="bank_address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="qualification">Qualification:</label>
+                    <select name="qualification" id="qualification" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="ITI">ITI</option>
+                        <option value="Graduate">Graduate</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="PG">PG</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience:</label>
+                    <select name="experience" id="experience" required>
+                        <option value="fresher">Fresher</option>
+                        <option value="1">1 year</option>
+                        <option value="2">2 years</option>
+                        <option value="3">3 years</option>
+                        <option value="4">4 years</option>
+                        <option value="5">5 years</option>
+                        <option value="6">6 years</option>
+                        <option value="7">7 years</option>
+                        <option value="8">8 years</option>
+                        <option value="9">9 years</option>
+                        <option value="10">10 years</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="profile_picture">Upload Profile Picture:</label>
+                    <input type="file" name="profile_picture" id="profile_picture" required>
+                </div>
+                <div class="form-group">
+                    <label for="signature">Upload Signature:</label>
+                    <input type="file" name="signature" id="signature" required>
+                </div>
+                <div class="form-group">
+                    <label for="file_upload">Upload Resume:</label>
+                    <input type="file" name="file_upload" id="file_upload">
+                </div>
+            </div>
+            <input type="submit" value="Submit" class="submit-button">
+        </form>
+    </div>
+</body>
+
+{% endblock main_content %}

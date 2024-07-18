@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Records</title>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,32 +14,37 @@
             margin: 0;
             padding: 0;
         }
-        .card {
+        .container {
             max-width: 95%;
-            margin: 0 auto;
-            border: -5% solid #ccc;
-            border-radius: -5%;
-            margin-bottom: 1%;
+            /* margin: 20px auto; */
+            background-color: #fff;
+            padding: 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
         .card-header {
             background-color: #007bff;
             color: #fff;
             padding: 1%;
-            border-top-left-radius: -5%;
-            border-top-right-radius: -5%;
-            margin-bottom: 0.5%;
-        }
-        h2 {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            margin-bottom: 0;
             text-align: center;
-            color: #fff;
         }
-        .card-body {
-            padding: 0; /* Remove padding to eliminate gap */
+        .card-header h2 {
+            margin: 0;
+        }
+        .heading {
+            text-align: center;
+            color: #007bff;
+            margin: 20px 0;
+            font-size: 24px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 0; /* Remove margin to eliminate gap */
+            margin: 20px 0;
         }
         table, th, td {
             border: 1px solid #ccc;
@@ -56,41 +60,38 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-        .btn {
-            display: block;
-            width: 55%;
+        .btn-primary {
             color: #fff;
-            background-color: #28a745;
+            background-color: #007bff;
             border: none;
-            padding: 1%;
-            border-radius: -5%;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             text-align: center;
-            margin: 2% auto; /* Center the button horizontally */
         }
-        .btn:hover {
-            background-color: #218838;
+        .btn-primary:hover {
+            background-color: #0056b3;
         }
-        /* Adjustments for filter dropdown */
         .form-group {
             margin-bottom: 1rem;
-            margin-left: 1rem; /* Adjust left margin for better alignment */
         }
         #company-filter {
-            width: calc(100% - 2rem); /* Full width minus margin */
-            max-width: 300px; /* Max width to prevent overly wide dropdown */
-            margin-left: 1rem; /* Adjust left margin for better alignment */
+            width: calc(100% - 2rem);
+            max-width: 300px;
+            margin-left: 1rem;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Update Attendance</h2>
+    <div class="container">
+        <div class="card-header">
+            <h2>Update Attendance</h2>
+        </div>
         
         <form method="post">
             {% csrf_token %}
-            <table class="table table-bordered mt-3">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>Employee ID</th>
@@ -99,6 +100,7 @@
                         <th>Out Time</th>
                         <th>Date</th>
                         <th>Remark</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,14 +112,15 @@
                         <td>{{ form.outtime }}</td>
                         <td>{{ form.date }}</td>
                         <td>{{ form.remark }}</td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    </body>
-
+</body>
 </html>
 {% endblock main_content %}

@@ -36,7 +36,7 @@ from .models import LeaveRequest
 from .forms import LeaveRequestApprovalForm
 import csv
 from .forms import HolidayForm
-from .models import Holiday
+from .models import Holiday,userCompany
 from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -183,6 +183,47 @@ def updateattend(request):
         return render(request, 'hr_temp/updateattend.html', context)
 
 
+
+def addUserCompany(request):
+    if request.method == 'POST':
+        # Extract data from the POST request
+        com_id = request.POST.get('comId')
+        com_name = request.POST.get('comName')
+        com_gst = request.POST.get('comGST')
+        com_cin = request.POST.get('comCIN')
+        com_cont = request.POST.get('comCont')
+        com_email = request.POST.get('comEmail')
+        com_dl_num1 = request.POST.get('comDLNum1')
+        com_dl_num2 = request.POST.get('comDLNum2')
+        com_pan_num = request.POST.get('comPanNum')
+        com_add = request.POST.get('comAdd')
+        com_city = request.POST.get('comCity')
+        com_state = request.POST.get('comState')
+        com_pin = request.POST.get('comPin')
+        
+        # Create a new userCompany object and save it to the database
+        new_company = userCompany(
+            comId=com_id,
+            comName=com_name,
+            comGST=com_gst,
+            comCIN=com_cin,
+            comCont=com_cont,
+            comEmail=com_email,
+            comDLNum1=com_dl_num1,
+            comDLNum2=com_dl_num2,
+            comPanNum=com_pan_num,
+            comAdd=com_add,
+            comCity=com_city,
+            comState=com_state,
+            comPin=com_pin
+        )
+        new_company.save()
+        
+        # Redirect to a success page or any other logic after successful form submission
+        return redirect('addUserCompany')  # Replace 'success_url_name' with the name of your success URL pattern
+    
+    # If the request method is not POST, render the form template (GET request)
+    return render(request, 'hr_temp/addUserCompany.html')
 
 
 
@@ -784,309 +825,7 @@ def generate_pdf_from_expenses(expenses):
 
 
 
-# from datetime import datetime
-# from io import BytesIO
-# from django.shortcuts import render, HttpResponse
-# from django.template.loader import render_to_string
-# from django.http import HttpResponseBadRequest
-# from reportlab.lib.pagesizes import landscape, letter
-# from reportlab.pdfgen import canvas
-# from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-# from reportlab.lib.units import inch
-# from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
-# from .models import Employee, TravelExpense, Receipt
-# from PIL import Image as PILImage
-# import os
 
-
-# def generate_pdf_from_expenses(expenses):
-#     company = Company.objects.first()
-#     buffer = BytesIO()
-#     pdf = SimpleDocTemplate(buffer, pagesize=landscape(letter), rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=72)
-#     styles = getSampleStyleSheet()
-
-#     # Add custom styles
-#     styles.add(ParagraphStyle(name='Center', alignment='CENTER'))
-#     bold_style = styles['Normal']
-#     bold_style.fontName = 'Helvetica-Bold'  # Set font to bold
-
-#     # Define paragraph style for table content with reduced font size
-#     table_content_style = ParagraphStyle(name='TableContent', fontSize=9)
-
-#     # Table data for employee information
-#     employee_info_data = [
-#         ['Employee Name', 'Employee ID', 'Designation', 'Department'],
-#         [f"{expenses[0].employee.user.first_name} {expenses[0].employee.user.last_name}", expenses[0].employee.emp_id, expenses[0].employee.designation, ]
-#     ]
-
-#     # Create the employee information table
-#     employee_info_table = Table(employee_info_data, colWidths=[2.5*inch, 2.5*inch, 2.5*inch, 2.5*inch])  # Adjusted widths
-#     employee_info_table.setStyle(TableStyle([
-#         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-#         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-#         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),  # Align all cells to the left
-#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-#         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-#     ]))
-
-#     # Table data for expenses
-#     table_data = [['Sr. No', 'From', 'Date', 'To', 'Date', 'Purpose', 'Distance',
-#                    'Transport', 'Food', 'Fare', 'Stay', 'Other', 'Total', 'Receipt']]
-
-#     total_amt = sum(expense.food_price + expense.transport_fare + expense.accommodation + expense.other for expense in expenses)
-
-#     for idx, expense in enumerate(expenses, start=1):
-#         # Fetch receipts associated with the current expense
-#         receipts = Receipt.objects.filter(travel_expense=expense)
-
-#         # Create a list to hold receipt images
-#         receipt_images = []
-#         for receipt in receipts:
-#             try:
-#                 pil_image = PILImage.open(receipt.image.path)
-#                 image_buffer = BytesIO()
-#                 pil_image.save(image_buffer, format='PNG')
-#                 image_buffer.seek(0)
-#                 receipt_images.append(Image(image_buffer, width=2*inch, height=2*inch))  # Adjust size as needed
-#             except Exception as e:
-#                 print(f"Error loading receipt image for expense {expense.pk}: {e}")
-
-#         # Append the expense details to the table data
-#         table_data.append([
-#             idx,
-#             Paragraph(expense.from_place, table_content_style),
-#             Paragraph(expense.from_date.strftime('%d-%m-%Y'), table_content_style),
-#             Paragraph(expense.to_place, table_content_style),
-#             Paragraph(expense.to_date.strftime('%d-%m-%Y'), table_content_style),
-#             Paragraph(expense.purpose, table_content_style),
-#             Paragraph(str(expense.distance), table_content_style),
-#             Paragraph(expense.model_of_travel, table_content_style),
-#             Paragraph(str(expense.food_price), table_content_style),
-#             Paragraph(str(expense.transport_fare), table_content_style),
-#             Paragraph(str(expense.accommodation), table_content_style),
-#             Paragraph(str(expense.other), table_content_style),
-#             Paragraph(str(expense.total), table_content_style),
-#             receipt_images  # Include receipt images in the table
-#         ])
-
-#     # Define table styles for expenses
-#     table_style = TableStyle([
-#         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-#         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-#         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-#         ('BOTTOMPADDING', (0, 0), (-1, 0), 9),
-#         ('BACKGROUND', (0, 1), (-1, -2), colors.lightgrey),
-#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-#         ('BACKGROUND', (-2, -1), (-1, -1), colors.white),
-#         ('TEXTCOLOR', (-2, -1), (-1, -1), colors.black),
-#         ('FONTNAME', (-2, -1), (-1, -1), 'Helvetica-Bold'),
-#     ])
-
-#     # Create the expense table
-#     expense_table = Table(table_data, colWidths=[0.5*inch, 0.8*inch, 0.9*inch, 0.8*inch, 0.9*inch, 0.9*inch,
-#                                                  0.9*inch, 0.8*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.7*inch, 1.5*inch])  # Adjusted column widths
-#     expense_table.setStyle(table_style)
-
-#     # List of elements to add to the PDF
-#     elements = [
-#         Paragraph("Travelling Expenses Report", styles['Title']),
-#         Spacer(1, 0.2*inch),
-        
-#         Spacer(1, 0.1*inch),
-#         employee_info_table,
-#         Spacer(1, 0.2*inch),
-#         expense_table
-#     ]
-
-#     # Build the PDF with the elements
-#     pdf.build(elements)
-
-#     # Get PDF buffer value and close the buffer
-#     pdf_buffer = buffer.getvalue()
-#     buffer.close()
-
-#     return pdf_buffer
-
-
-
-
-
-# from reportlab.lib.pagesizes import landscape, letter
-
-# def generate_pdf_from_expenses(expenses):
-#     company = Company.objects.first()
-#     employee = Employee.objects.all()
-#     buffer = BytesIO()
-#     pdf = SimpleDocTemplate(buffer, pagesize=landscape(letter), rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=72)
-#     styles = getSampleStyleSheet()
-
-#     # Add custom styles
-#     styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
-#     bold_style = styles['Normal']
-#     bold_style.fontName = 'Helvetica-Bold'  # Set font to bold
-
-#     # Define paragraph style for table content with reduced font size
-#     table_content_style = ParagraphStyle(name='TableContent', fontSize=9)
-
-#     # Table data for employee information
-#     employee_info_data = [
-#         ['Employee Name', 'Employee ID', 'Designation', 'Department'],
-#         [f"{expenses[0].employee.user.first_name} {expenses[0].employee.user.last_name}", expenses[0].employee.emp_id, expenses[0].employee.designation, expenses[0].employee.designation]
-#     ]
-
-#     # Create the employee information table
-#     employee_info_table = Table(employee_info_data, colWidths=[2.5*inch, 2.5*inch, 2.5*inch, 2.5*inch])  # Adjusted widths
-#     employee_info_table.setStyle(TableStyle([
-#         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-#         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-#         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),  # Align all cells to the left
-#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-#         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-#     ]))
-
-#     # Table data for expenses
-#     table_data = [['Sr. No', 'Place', 'Date', 'Place', 'Date', 'Purpose', 'Distance',
-#                    'Transport', 'Food', 'Fare', 'Stay', 'Other','Total']]
-#     total_amt = sum(expense.food_price + expense.transport_fare + expense.accommodation + expense.other for expense in expenses)
-
-#     for idx, expense in enumerate(expenses, start=1):
-#         table_data.append([
-#             idx,
-#             Paragraph(expense.from_place, table_content_style),
-#             Paragraph(expense.from_date.strftime('%d-%m-%Y'), table_content_style),
-#             Paragraph(expense.to_place, table_content_style),
-#             Paragraph(expense.to_date.strftime('%d-%m-%Y'), table_content_style),
-#             Paragraph(expense.purpose, table_content_style),
-#             Paragraph(str(expense.distance), table_content_style),
-#             Paragraph(expense.model_of_travel, table_content_style),
-#             Paragraph(str(expense.food_price), table_content_style),
-#             Paragraph(str(expense.transport_fare), table_content_style),
-#             Paragraph(str(expense.accommodation), table_content_style),
-#             Paragraph(str(expense.other), table_content_style),
-#             Paragraph(str(expense.total), table_content_style),
-#         ])
-
-#     # Add total amount row to the table
-#     table_data.append([
-#         Paragraph('', table_content_style),  # Empty cell for Sr. No
-#         Paragraph('', table_content_style),  # Empty cell for Place
-#         Paragraph('', table_content_style),  # Empty cell for Date
-#         Paragraph('', table_content_style),  # Empty cell for Place
-#         Paragraph('', table_content_style),  # Empty cell for Date
-#         Paragraph('', table_content_style),  # Empty cell for Purpose
-#         Paragraph('', table_content_style),  # Empty cell for Distance
-#         Paragraph('', table_content_style),  # Empty cell for Transport
-#         Paragraph('', table_content_style),  # Empty cell for Food
-#         Paragraph('', table_content_style),  # Empty cell for Fare
-#         Paragraph('', table_content_style),  # Empty cell for Stay
-#         Paragraph('Total', table_content_style),  # Total label
-#         total_amt  # Total amount
-#     ])
-
-#     # Define table styles for expenses
-#     table_style = TableStyle([
-#         ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-#         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-#         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-#         ('BOTTOMPADDING', (0, 0), (-1, 0), 9),
-#         ('BACKGROUND', (0, 1), (-1, -2), colors.lightgrey),
-#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-#         ('BACKGROUND', (-2, -1), (-1, -1), colors.white),
-#         ('TEXTCOLOR', (-2, -1), (-1, -1), colors.black),
-#         ('FONTNAME', (-2, -1), (-1, -1), 'Helvetica-Bold'),
-#     ])
-
-#     # Create the expense table
-#     expense_table = Table(table_data, colWidths=[0.5*inch, 0.8*inch, 0.9*inch, 0.8*inch, 0.9*inch, 0.9*inch,
-#                                                   0.9*inch, 0.8*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.7*inch])
-#     expense_table.setStyle(table_style)
-
-#     # Create a blank table with the same column widths as the expense table
-#     blank_table_data = [['', 'FROM', '', 'TO', '', '', '','', '', '', '', '','']]
-#     blank_table = Table(blank_table_data, colWidths=[0.5*inch, 1.7*inch, 0.0*inch, 1.7*inch, 0.0*inch, 0.9*inch,0.9*inch, 0.8*inch, 0.7*inch, 0.7*inch, 0.7*inch, 0.7*inch])
-#     blank_table.setStyle(TableStyle([
-#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-#         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-#     ]))
-
-#     # Add title and date
-#     company_name = Paragraph(company.company_name, styles['Title'])
-
-#     title = Paragraph("Travelling Expenses Bill", styles['Title'])
-#     # Total amount in words
-#     total_miscellaneous = sum(expense.miscellaneous for expense in expenses)
-#     total_reimbursement = total_amt + total_miscellaneous
-#     amount_in_words = convert_to_words(total_reimbursement)
-#     amount_in_words_para = Paragraph(f"<b>Total Amount in Words:</b> {amount_in_words} only ", bold_style)
-    
-#     # List of elements to add to the PDF
-#     elements = [title, Spacer(1, 0.2*inch), company_name, Spacer(1, 0.1*inch), employee_info_table, Spacer(1, 0.2*inch), blank_table, expense_table]
-
-#     # Add a new table with 2 rows and different column widths directly below the expense table
-#     new_table_data = [
-#         ['','','','','','','','','','','Miscellaneous Expense',total_miscellaneous,],
-#         ['','','','','','','','','','','Total Reimbursement',total_reimbursement,]
-#     ]
-#     new_table = Table(new_table_data, colWidths=[0.5*inch, 0.8*inch, 0.9*inch, 0.8*inch, 0.9*inch, 0.9*inch,
-#                                                   0.9*inch, 0.8*inch, 0.7*inch, 0.5*inch, 1.6*inch, 0.7*inch])  # Adjust column widths as needed
-#     new_table.setStyle(TableStyle([
-#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-#         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-#     ]))
-
-#     elements.extend([Spacer(1, 0.05*inch), new_table, Spacer(1, 0.2*inch), amount_in_words_para])
-
-#     # Increase the space between "Amount in Words" and the signature section by adjusting the height of the Spacer below
-#     elements.append(Spacer(1, 1.0*inch))  # Adjust this height to change the space as needed
-
-#     # "Prepared By" and "Authorized By" section with alignment adjustments
-#     prepared_by = Paragraph("Prepared By", styles['Normal'])
-#     prepared_name = Paragraph(f"{expenses[0].employee.user.first_name} {expenses[0].employee.user.last_name}", styles['Normal'])
-#     authorized_by = Paragraph("Authorized By", styles['Normal'])
-#     authorized_name = Paragraph(f"{expenses[0].employee.reporting}", styles['Normal'])
-#     # Table for signatures with alignment, adding an empty column for spacing
-#     signatures_data = [
-#         [prepared_by, '', authorized_by],
-#         [prepared_name, '', authorized_name]
-#     ]
-
-#     # Increase the width of the empty column to add more space between the prepared and authorized sections
-#     signatures_table = Table(signatures_data, colWidths=[2*inch, 5*inch, 2*inch])
-
-#     signatures_table.setStyle(TableStyle([
-#         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-#     ]))
-
-#     elements.append(signatures_table)
-
-#     # Add images to the PDF
-#     for expense in expenses:
-#         if expense.receipt:
-#             try:
-#                 # Convert PIL image to a file-like object
-#                 pil_image = PILImage.open(expense.receipt.path)
-#                 image_buffer = BytesIO()
-#                 pil_image.save(image_buffer, format='PNG')
-#                 image_buffer.seek(0)
-
-#                 # Create a ReportLab Image
-#                 image = Image(image_buffer, width=4*inch, height=4*inch)  # Adjust the size as needed
-#                 elements.append(image)
-#             except Exception as e:
-#                 print(f"Error loading image {expense.receipt.path}: {e}")  # Debugging statement
-
-#     # Build the PDF with the elements
-#     pdf.build(elements)
-
-#     # Get PDF buffer value and close the buffer
-#     pdf_buffer = buffer.getvalue()
-#     buffer.close()
-
-#     return pdf_buffer
 
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -3731,6 +3470,80 @@ def pdf_upload(request, emp_id):
     salary_slip.save()
 
     return redirect('salarysheet')
+
+
+from django.db import IntegrityError
+from django.shortcuts import render, redirect
+from .models import EmployeeJoining
+
+def add_employee(request):
+    if request.method == 'POST':
+        emp_id = request.POST['emp_id']
+        first_name = request.POST['first_name']
+        middle_name = request.POST.get('middle_name', '')
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        contact_number = request.POST['contact_number']
+        whatsapp_number = request.POST.get('whatsapp_number', '')
+        age = request.POST['age']
+        gender = request.POST['gender']
+        current_address = request.POST['current_address']
+        permanent_address = request.POST['permanent_address']
+        city = request.POST['city']
+        state = request.POST['state']
+        pincode = request.POST['pincode']
+        security_guard_training = request.POST.get('security_guard_training') == 'yes'
+        job_experience = request.POST.get('job_experience') == 'yes'
+        profile_picture = request.FILES['profile_picture']
+        signature = request.FILES['signature']
+        preferred_work_arrangements = request.POST['preferred_work_arrangements']
+        position = request.POST['position']
+        account_holder_name = request.POST['account_holder_name']
+        bank_name = request.POST['bank_name']
+        bank_account_number = request.POST['bank_account_number']
+        ifsc_code = request.POST['ifsc_code']
+        branch_name = request.POST['branch_name']
+        bank_address = request.POST['bank_address']
+        qualification = request.POST['qualification']
+        experience = request.POST['experience']
+
+        try:
+            employee = EmployeeJoining(
+                emp_id=emp_id,
+                first_name=first_name,
+                middle_name=middle_name,
+                last_name=last_name,
+                email=email,
+                contact_number=contact_number,
+                whatsapp_number=whatsapp_number,
+                age=age,
+                gender=gender,
+                current_address=current_address,
+                permanent_address=permanent_address,
+                city=city,
+                state=state,
+                pincode=pincode,
+                security_guard_training=security_guard_training,
+                job_experience=job_experience,
+                profile_picture=profile_picture,
+                signature=signature,
+                preferred_work_arrangements=preferred_work_arrangements,
+                position=position,
+                account_holder_name=account_holder_name,
+                bank_name=bank_name,
+                bank_account_number=bank_account_number,
+                ifsc_code=ifsc_code,
+                branch_name=branch_name,
+                bank_address=bank_address,
+                qualification=qualification,
+                experience=experience
+            )
+            employee.save()
+            return redirect('add_employee')  # Redirect to a success page after saving
+        except IntegrityError:
+            return render(request, 'hr_temp/employee_form.html', {'error': 'Employee ID already exists. Please use a unique Employee ID.'})
+
+    return render(request, 'hr_temp/employee_form.html')
 
 
 

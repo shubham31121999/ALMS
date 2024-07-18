@@ -1,0 +1,193 @@
+{% extends 'hr_temp/base.html' %}
+{% block main_content %}
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+ max-width: 95%;
+ margin: 0 auto;
+ border: -5% solid #ccc;
+ border-radius: -5%;
+ margin-bottom: 1%;
+}
+.card-header {
+ background-color: #007bff;
+ color: #fff;
+ padding: 0.8%;
+ border-top-left-radius: -5%;
+ border-top-right-radius: -5%;
+ margin-bottom: 2%;
+color: white;
+text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.form-group {
+    width: 30%;  /* Adjusted for three columns */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+button {
+    padding: 10px 20px;
+    margin-left: 49%;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>User Company Form</h2>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="comId">Company ID:</label>
+                    <input type="text" id="comId" name="comId" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="comName">Company Name:</label>
+                    <input type="text" id="comName" name="comName" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="comGST">GST Number:</label>
+                    <input type="text" id="comGST" name="comGST" maxlength="50" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="comCIN">CIN Number:</label>
+                    <input type="text" id="comCIN" name="comCIN" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="comCont">Contact Number:</label>
+                    <input type="number" id="comCont" name="comCont" required>
+                </div>
+                <div class="form-group">
+                    <label for="comEmail">Email:</label>
+                    <input type="email" id="comEmail" name="comEmail" maxlength="50" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="comDLNum1">D/L Number 1:</label>
+                    <input type="text" id="comDLNum1" name="comDLNum1" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="comDLNum2">D/L Number 2:</label>
+                    <input type="text" id="comDLNum2" name="comDLNum2" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="comPanNum">PAN Number:</label>
+                    <input type="text" id="comPanNum" name="comPanNum" maxlength="50" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="comAdd">Address:</label>
+                    <input type="text" id="comAdd" name="comAdd" maxlength="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="comCity">City:</label>
+                    <input type="text" id="comCity" name="comCity" maxlength="50" required>
+                </div>
+                <div class="form-group">
+                    <label for="comState">State:</label>
+                    <select id="comState" name="comState" required>
+                        <option value="">Select State</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Puducherry">Puducherry</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="comPin">PIN Code:</label>
+                    <input type="number" id="comPin" name="comPin" maxlength="10" required>
+                </div>
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+
+{% endblock main_content %}
